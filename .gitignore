@@ -1,0 +1,9 @@
+# Dependencies
+node_modules
+
+# Postgres volume
+
+# Environment
+.env
+.env.test
+

@@ -7,4 +7,9 @@ export default [
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
+  {
+    rules: {
+      "no-useless-constructor": "off",
+    },
+  },
 ];

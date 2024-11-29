@@ -17,6 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "9.15.0",
+    "@types/bcryptjs": "2.4.6",
     "@types/express": "5.0.0",
     "@types/node": "22.10.1",
     "eslint": "9.15.0",
@@ -35,6 +36,7 @@
     "@commitlint/config-conventional": "19.6.0",
     "@prisma/client": "6.0.0",
     "axios": "^1.7.8",
+    "bcryptjs": "2.4.3",
     "dotenv": "16.4.5",
     "express": "4.21.1",
     "zod": "3.23.8"

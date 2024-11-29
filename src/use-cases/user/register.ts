@@ -1,5 +1,6 @@
 import { UserAlreadyExists } from '@/errors/user-already-exists'
 import { UsersRepository } from '@/repositories/users-repository'
+import { User } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
 interface RegisterUseCasesParams {
@@ -8,10 +9,16 @@ interface RegisterUseCasesParams {
   password: string
 }
 
+interface RegisterUseCaseResponse {
+  createdUser: User
+}
+
 export class RegisterUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
-  async execute(params: RegisterUseCasesParams) {
+  async execute(
+    params: RegisterUseCasesParams,
+  ): Promise<RegisterUseCaseResponse> {
     const { name, email, password } = params
 
     const hasedPassword = await bcrypt.hash(password, 12)
@@ -28,6 +35,6 @@ export class RegisterUseCase {
       password: hasedPassword,
     })
 
-    return createdUser
+    return { createdUser }
   }
 }

@@ -3,9 +3,11 @@ services:
     image: postgres
     container_name: api-mycashly-pg
     environment:
-      POSTGRES_PASSWORD: root
-      POSTGRES_USER: root
-      POSTGRES_DB: mycashly
+      - UID=${UID}
+      - GID=${GID}
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=mycashly
     ports:
       - "5432:5432"
     volumes:

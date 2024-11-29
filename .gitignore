@@ -2,9 +2,11 @@
 node_modules
 
 # Postgres volume
-.postgres-data
+postgres-data
 
 # Environment
 .env
 .env.test
 
+# Tests
+coverage

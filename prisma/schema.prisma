@@ -1,0 +1,64 @@
+//npx prisma migrate dev - O prisma lê o schema vê o estado atual do banco de dados e identifica o que mudou, o migrate dev também gera o arquivo SQL das mudanças feitas
+
+// npx prisma migrate deploy - Pega todas as migrations geradas em desenvolvimento e sobe para produção
+
+// Nome da migration é um breve descrição do que foi realizado, similar a um commit
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  // @default() define um valor default para o uuid ao criar um usuário
+  id       String @id @default(uuid()) @db.Uuid
+  name     String
+  email    String @unique
+  password String
+
+  categories   Category[]
+  transactions Transactions[]
+
+  //Nome da tabela no banco de dados SQL - letra minúsculas, snake_case. Podemos usar o @@map("name_sql") para mudar no banco
+  @@map("users")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  INVESTMENT
+
+  @@map("transaction_type")
+}
+
+model Category {
+  id     String          @id @default(uuid()) @db.Uuid
+  userId String          @map("user_id") @db.Uuid
+  name   String
+  type   TransactionType
+
+  transactions Transactions[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("categories")
+}
+
+model Transactions {
+  id         String          @id @default(uuid()) @db.Uuid
+  userId     String          @map("user_id") @db.Uuid
+  categoryId String?         @map("category_id") @db.Uuid
+  name       String
+  value      Float
+  type       TransactionType
+  date       DateTime
+
+  User     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@map("transactions")
+}

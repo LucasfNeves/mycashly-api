@@ -2,6 +2,7 @@
 node_modules
 
 # Postgres volume
+.postgres-data
 
 # Environment
 .env

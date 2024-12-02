@@ -4,7 +4,7 @@
   "description": "MyCashly - Financial Controll App",
   "main": "server.js",
   "scripts": {
-      "start:dev": "nodemon src/server.ts",
+    "start:dev": "nodemon src/server.ts",
     "start": "node build/server.js",
     "test": "vitest run",
     "test:watch": "vitest",

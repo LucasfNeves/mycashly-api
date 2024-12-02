@@ -1,6 +1,10 @@
-import { CreateUserController } from '../http/controllers/user/index'
 import { PrismaUsersRepository } from '../repositories/prisma'
-import { RegisterUseCase } from '../use-cases/user/index'
+
+import {
+  AuthenticateUserController,
+  CreateUserController,
+} from '../http/controllers/user/index'
+import { RegisterUseCase, AuthenticateUseCase } from '../use-cases/user/index'
 
 export const makeCreateUserController = () => {
   const usersRepository = new PrismaUsersRepository()
@@ -10,4 +14,16 @@ export const makeCreateUserController = () => {
   const createUserController = new CreateUserController(registerUserUseCase)
 
   return createUserController
+}
+
+export const makeAuthenticateController = () => {
+  const usersRepository = new PrismaUsersRepository()
+
+  const authenticateUseCase = new AuthenticateUseCase(usersRepository)
+
+  const authenticateController = new AuthenticateUserController(
+    authenticateUseCase,
+  )
+
+  return authenticateController
 }

@@ -1,9 +1,10 @@
 import { UserAlreadyExists } from '../../../errors/user-already-exists'
 import { env } from 'process'
 import { z } from 'zod'
-import { badRequest, serverError } from '../helpers/http'
-import { User } from '@prisma/client'
+import { badRequest, created, serverError } from '../helpers/http'
+
 import { createUserSchema } from '../../../schemas/user'
+import { User } from '@prisma/client'
 
 interface CreateUserRequest {
   body: {
@@ -38,10 +39,7 @@ export class CreateUserController {
         password,
       })
 
-      return {
-        statusCode: 201,
-        body: createdUser,
-      }
+      return created(createdUser)
     } catch (error) {
       if (error instanceof UserAlreadyExists) {
         return badRequest({
@@ -50,9 +48,8 @@ export class CreateUserController {
       }
 
       if (error instanceof z.ZodError) {
-        return badRequest({
-          message: error.errors[0].message,
-        })
+        const errorMessage = error.errors[0].message
+        return badRequest({ errorMessage })
       }
 
       if (env.NODE_ENV !== 'production') {

@@ -1,6 +1,9 @@
 import { Router } from 'express'
 import type { Request, Response } from 'express'
-import { makeCreateUserController } from '../factories/user'
+import {
+  makeAuthenticateController,
+  makeCreateUserController,
+} from '../factories/user'
 
 export const router = Router()
 
@@ -15,7 +18,14 @@ router.post('/users', async (request: Request, response: Response) => {
     return
   }
 
-  response
-    .status(createUserResponse.statusCode)
-    .send(createUserResponse.body.createdUser)
+  response.status(createUserResponse.statusCode).send(createUserResponse.body)
+})
+
+router.post('/sessions', async (request: Request, response: Response) => {
+  const createAuthenticateController = makeAuthenticateController()
+
+  const uthenticateResponse =
+    await createAuthenticateController.execute(request)
+
+  response.status(uthenticateResponse.statusCode).send(uthenticateResponse.body)
 })

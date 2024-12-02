@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import type { Request, Response } from 'express'
-import { makeCreateUserController } from '@/factories/user'
+import { makeCreateUserController } from '../factories/user'
 
 export const router = Router()
 
@@ -15,5 +15,7 @@ router.post('/users', async (request: Request, response: Response) => {
     return
   }
 
-  response.status(createUserResponse.statusCode).send(createUserResponse.body)
+  response
+    .status(createUserResponse.statusCode)
+    .send(createUserResponse.body.createdUser)
 })

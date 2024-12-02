@@ -1,39 +1,31 @@
 import { env } from 'process'
 import { z } from 'zod'
-import { badRequest, serverError } from '../helpers/http'
+import { badRequest, serverError, unauthorized } from '../helpers/http'
 
 import { authenticateUserSchema } from '../../../schemas/user'
-import { AuthenticateUseCase } from '../../../use-cases/user/authenticate'
+import { AuthenticateUseCase } from '../../use-cases/user/authenticate'
 import { InvalidCredentialsError } from '../../../errors/user-already-exists copy'
 import { ok } from '../helpers/http'
+import { IController, IRequest, IResponse } from '../../interfaces/IController'
 
-interface AuthenticateUserRequest {
-  body: {
-    email: string
-    password: string
-  }
-}
+export class AuthenticateUserController implements IController {
+  constructor(private readonly authenticateUseCase: AuthenticateUseCase) {}
 
-export class AuthenticateUserController {
-  constructor(private authenticateUseCase: AuthenticateUseCase) {}
-
-  async execute(httpRequest: AuthenticateUserRequest) {
+  async handle(request: IRequest): Promise<IResponse> {
     try {
-      const params = httpRequest.body
-
-      await authenticateUserSchema.parseAsync(params)
+      const params = await authenticateUserSchema.parseAsync(request.body)
 
       const { email, password } = params
 
-      const user = await this.authenticateUseCase.execute({
+      const { acessToken } = await this.authenticateUseCase.execute({
         email,
         password,
       })
 
-      return ok({ ...user })
+      return ok({ acessToken })
     } catch (error) {
       if (error instanceof InvalidCredentialsError) {
-        return badRequest({
+        return unauthorized({
           message: error.message,
         })
       }

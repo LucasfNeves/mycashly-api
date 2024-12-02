@@ -3,7 +3,7 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { faker } from '@faker-js/faker'
 import { AuthenticateUseCase } from './authenticate'
 import { hash } from 'bcryptjs'
-import { InvalidCredentialsError } from '../../errors/user-already-exists copy'
+import { InvalidCredentialsError } from '../../../errors/user-already-exists copy'
 
 describe('Authenticate User Use Case', () => {
   let usersRepository: inMemoryUsersRepository
@@ -24,13 +24,13 @@ describe('Authenticate User Use Case', () => {
     })
 
     // act (Chama o controller a ser testado)
-    const { user } = await sut.execute({
+    const { acessToken } = await sut.execute({
       email,
       password: '123456',
     })
 
     // assert (Fazer a sua expectativa de resultado)
-    expect(user.id).toEqual(expect.any(String))
+    expect(acessToken).toBeTruthy()
   })
 
   it('should not be able to autheticate with wrong email', async () => {

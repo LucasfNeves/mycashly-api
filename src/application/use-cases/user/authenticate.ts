@@ -1,6 +1,8 @@
 import { compare } from 'bcryptjs'
-import { InvalidCredentialsError } from '../../errors/user-already-exists copy'
+import { InvalidCredentialsError } from '../../../errors/user-already-exists copy'
 import { UsersRepository } from '../../repositories/users-repository'
+import { sign } from 'jsonwebtoken'
+import { env } from '../../../config/env'
 
 interface AuthenticateUseCaseParams {
   email: string
@@ -8,12 +10,7 @@ interface AuthenticateUseCaseParams {
 }
 
 interface AuthenticateUseCaseResponse {
-  user: {
-    id: string
-    name: string
-    email: string
-    password: string
-  }
+  acessToken: string
 }
 
 export class AuthenticateUseCase {
@@ -35,6 +32,10 @@ export class AuthenticateUseCase {
       throw new InvalidCredentialsError()
     }
 
-    return { user }
+    const acessToken = sign({ sub: user.id }, env.jwtSecret!, {
+      expiresIn: '1d',
+    })
+
+    return { acessToken }
   }
 }

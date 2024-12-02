@@ -3,7 +3,7 @@ import { expect, describe, it } from 'vitest'
 import { RegisterUseCase } from './register'
 import { compare } from 'bcryptjs'
 import { faker } from '@faker-js/faker'
-import { UserAlreadyExists } from '../../errors/user-already-exists'
+import { UserAlreadyExists } from '../../../errors/user-already-exists'
 
 describe('Register Use Case', () => {
   it('should create a new user', async () => {

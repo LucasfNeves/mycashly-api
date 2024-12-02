@@ -1,10 +1,13 @@
-import { PrismaUsersRepository } from '../repositories/prisma'
+import { PrismaUsersRepository } from '../application/repositories/prisma'
 
 import {
   AuthenticateUserController,
   CreateUserController,
-} from '../http/controllers/user/index'
-import { RegisterUseCase, AuthenticateUseCase } from '../use-cases/user/index'
+} from '../application/controllers/user/index'
+import {
+  RegisterUseCase,
+  AuthenticateUseCase,
+} from '../application/use-cases/user/index'
 
 export const makeCreateUserController = () => {
   const usersRepository = new PrismaUsersRepository()

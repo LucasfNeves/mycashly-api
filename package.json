@@ -4,7 +4,7 @@
   "description": "MyCashly - Financial Controll App",
   "main": "server.js",
   "scripts": {
-    "start:dev": "nodemon src/server.ts",
+    "start:dev": "nodemon src/server/index.ts",
     "start": "node build/server.js",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -21,6 +21,7 @@
     "@faker-js/faker": "9.2.0",
     "@types/bcryptjs": "2.4.6",
     "@types/express": "5.0.0",
+    "@types/jsonwebtoken": "9.0.7",
     "@types/node": "22.10.1",
     "@vitest/coverage-v8": "2.1.6",
     "eslint": "9.15.0",
@@ -46,6 +47,7 @@
     "bcryptjs": "2.4.3",
     "dotenv": "16.4.5",
     "express": "4.21.1",
+    "jsonwebtoken": "9.0.2",
     "zod": "3.23.8"
   }
 }

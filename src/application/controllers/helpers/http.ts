@@ -16,6 +16,13 @@ export const badRequest = (body: ResponseBody): Response => {
   }
 }
 
+export const unauthorized = (body: ResponseBody): Response => {
+  return {
+    statusCode: 401,
+    body,
+  }
+}
+
 export const userNotFound = (): Response => {
   return {
     statusCode: 404,

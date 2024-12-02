@@ -5,14 +5,7 @@ import { badRequest, created, serverError } from '../helpers/http'
 
 import { createUserSchema } from '../../../schemas/user'
 import { User } from '@prisma/client'
-
-interface CreateUserRequest {
-  body: {
-    email: string
-    name: string
-    password: string
-  }
-}
+import { IController, IRequest, IResponse } from '../../interfaces/IController'
 
 interface RegisterUserUseCaseParams {
   execute: (params: {
@@ -22,16 +15,14 @@ interface RegisterUserUseCaseParams {
   }) => Promise<{ createdUser: User }>
 }
 
-export class CreateUserController {
-  constructor(private registerUserUseCase: RegisterUserUseCaseParams) {}
+export class CreateUserController implements IController {
+  constructor(
+    private readonly registerUserUseCase: RegisterUserUseCaseParams,
+  ) {}
 
-  async register(httpRequest: CreateUserRequest) {
+  async handle({ body }: IRequest): Promise<IResponse> {
     try {
-      const params = httpRequest.body
-
-      await createUserSchema.parseAsync(params)
-
-      const { email, name, password } = params
+      const { email, name, password } = await createUserSchema.parseAsync(body)
 
       const createdUser = await this.registerUserUseCase.execute({
         email,

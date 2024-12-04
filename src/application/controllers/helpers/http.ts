@@ -59,7 +59,9 @@ export const serverError = (): Response => {
   }
 }
 
-export const ok = (body: ResponseBody): Response => ({
-  statusCode: 200,
-  body,
-})
+export const ok = (body: ResponseBody): Response => {
+  return {
+    statusCode: 200,
+    body,
+  }
+}

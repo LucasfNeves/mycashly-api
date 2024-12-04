@@ -1,4 +1,4 @@
-import { PrismaUsersRepository } from '../application/repositories/prisma'
+import { PrismaUsersRepository } from '../application/repositories/postgres'
 
 import {
   AuthenticateUserController,
@@ -7,7 +7,9 @@ import {
 import {
   RegisterUseCase,
   AuthenticateUseCase,
+  UpdateUserUseCase,
 } from '../application/use-cases/user/index'
+import { UpdateUserController } from '../application/controllers/user/update-user'
 
 export const makeCreateUserController = () => {
   const usersRepository = new PrismaUsersRepository()
@@ -29,4 +31,14 @@ export const makeAuthenticateController = () => {
   )
 
   return authenticateController
+}
+
+export const makeUpdateUserController = () => {
+  const usersRepository = new PrismaUsersRepository()
+
+  const updateUserUseCase = new UpdateUserUseCase(usersRepository)
+
+  const updateUserController = new UpdateUserController(updateUserUseCase)
+
+  return updateUserController
 }

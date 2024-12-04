@@ -1,5 +1,5 @@
 import { User, Prisma } from '@prisma/client'
-import { UsersRepository } from '../users-repository'
+import { UsersRepository } from '../interfaces/users-repository'
 
 export class inMemoryUsersRepository implements UsersRepository {
   public items: User[] = []
@@ -24,5 +24,24 @@ export class inMemoryUsersRepository implements UsersRepository {
     this.items.push(user)
 
     return user
+  }
+
+  async updateUser(userId: string, data: Prisma.UserUpdateInput) {
+    const user = this.items.find((user) => user.id === userId)
+
+    if (!user) {
+      return null
+    }
+
+    const updatedUser = {
+      ...user,
+      ...data,
+    } as User
+
+    this.items = this.items.map((user) =>
+      user.id === userId ? updatedUser : user,
+    )
+
+    return updatedUser
   }
 }

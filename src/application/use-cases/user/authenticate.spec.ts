@@ -3,7 +3,7 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { faker } from '@faker-js/faker'
 import { AuthenticateUseCase } from './authenticate'
 import { hash } from 'bcryptjs'
-import { InvalidCredentialsError } from '../../../errors/user-already-exists copy'
+import { InvalidCredentialsError } from '../../../errors/Invalid-credentials-error'
 
 describe('Authenticate User Use Case', () => {
   let usersRepository: inMemoryUsersRepository

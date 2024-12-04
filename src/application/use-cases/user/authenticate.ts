@@ -1,6 +1,6 @@
 import { compare } from 'bcryptjs'
-import { InvalidCredentialsError } from '../../../errors/user-already-exists copy'
-import { UsersRepository } from '../../repositories/users-repository'
+import { InvalidCredentialsError } from '../../../errors/Invalid-credentials-error'
+import { UsersRepository } from '../../repositories/interfaces/users-repository'
 import { sign } from 'jsonwebtoken'
 import { env } from '../../../config/env'
 

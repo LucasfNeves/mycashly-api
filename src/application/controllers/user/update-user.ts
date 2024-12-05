@@ -1,4 +1,4 @@
-import { badRequest, ok, serverError } from '../helpers/http'
+import { badRequest, ok, serverError, userNotFound } from '../helpers/http'
 import { updateUserSchema } from '../../../schemas/user'
 import { IController, IRequest, IResponse } from '../../interfaces/IController'
 import { UpdateUserUseCase } from '../../use-cases/user/update-user'
@@ -8,15 +8,18 @@ import {
 } from '../helpers/validation'
 import { EmailAlreadyInUseError } from '../../../errors/email-already-in-use'
 import { ZodError } from 'zod'
+import { UserNotFoundError } from '../../../errors/user-not-found-error'
 
 export class UpdateUserController implements IController {
   constructor(private readonly updateUserUseCase: UpdateUserUseCase) {}
 
-  async handle({ body, params }: IRequest): Promise<IResponse> {
+  async handle({ body, accountId }: IRequest): Promise<IResponse> {
     try {
-      const userId: string = params?.userId as string
+      const userId = accountId
 
-      console.log(userId)
+      if (!userId) {
+        throw new UserNotFoundError()
+      }
 
       const isIdValid = checkIfIdIsValid(userId)
 
@@ -33,6 +36,10 @@ export class UpdateUserController implements IController {
 
       return ok({ ...updateUser })
     } catch (error) {
+      if (error instanceof Error && 'code' in error && error.code === 'P2025') {
+        return userNotFound()
+      }
+
       if (error instanceof ZodError) {
         return badRequest({
           message: error.errors[0].message,
@@ -45,7 +52,7 @@ export class UpdateUserController implements IController {
         })
       }
 
-      console.log(error)
+      // console.log(error)
       return serverError()
     }
   }

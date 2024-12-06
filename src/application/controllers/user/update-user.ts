@@ -52,7 +52,6 @@ export class UpdateUserController implements IController {
         })
       }
 
-      // console.log(error)
       return serverError()
     }
   }

@@ -9,4 +9,9 @@ export interface UsersRepository {
     name: string
     email: string
   } | null>
+  deleteUser(userId: string): Promise<{
+    id: string
+    name: string
+    email: string
+  } | null>
 }

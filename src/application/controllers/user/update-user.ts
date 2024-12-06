@@ -37,7 +37,7 @@ export class UpdateUserController implements IController {
       return ok({ ...updateUser })
     } catch (error) {
       if (error instanceof Error && 'code' in error && error.code === 'P2025') {
-        return userNotFound()
+        return userNotFound({ errorMessage: 'User not found' })
       }
 
       if (error instanceof ZodError) {

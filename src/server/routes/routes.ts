@@ -1,6 +1,7 @@
 import {
   makeAuthenticateController,
   makeCreateUserController,
+  makeDeleteUserController,
   makeGetUserByIdController,
   makeUpdateUserController,
 } from '../../factories/user'
@@ -29,6 +30,12 @@ router.get(
   '/users',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetUserByIdController()),
+)
+
+router.delete(
+  '/users',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeDeleteUserController()),
 )
 
 /** Transactions */

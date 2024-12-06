@@ -1,6 +1,7 @@
 import { prisma } from '../../../lib/prisma'
 import { Prisma } from '@prisma/client'
 import { UsersRepository } from '../interfaces/users-repository'
+import { UserNotFoundError } from '../../../errors/user-not-found-error'
 
 export class PrismaUsersRepository implements UsersRepository {
   async findByEmail(email: string) {
@@ -66,7 +67,25 @@ export class PrismaUsersRepository implements UsersRepository {
     })
 
     if (!user) {
-      return null
+      throw new UserNotFoundError()
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    }
+  }
+
+  async deleteUser(userId: string) {
+    const user = await prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    })
+
+    if (!user) {
+      throw new UserNotFoundError()
     }
 
     return {

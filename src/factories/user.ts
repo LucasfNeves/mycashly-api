@@ -3,15 +3,17 @@ import { PrismaUsersRepository } from '../application/repositories/postgres'
 import {
   AuthenticateUserController,
   CreateUserController,
+  DeleteUserController,
   GetUserByIdController,
+  UpdateUserController,
 } from '../application/controllers/user/index'
 import {
   RegisterUseCase,
   AuthenticateUseCase,
   UpdateUserUseCase,
   GetUserByIdUseCase,
+  DeleteUserUseCase,
 } from '../application/use-cases/user/index'
-import { UpdateUserController } from '../application/controllers/user/update-user'
 
 export const makeCreateUserController = () => {
   const usersRepository = new PrismaUsersRepository()
@@ -53,4 +55,14 @@ export const makeGetUserByIdController = () => {
   const getUserByIdController = new GetUserByIdController(getUserByIdUseCase)
 
   return getUserByIdController
+}
+
+export const makeDeleteUserController = () => {
+  const usersRepository = new PrismaUsersRepository()
+
+  const deleteUserUseCase = new DeleteUserUseCase(usersRepository)
+
+  const deleteUserController = new DeleteUserController(deleteUserUseCase)
+
+  return deleteUserController
 }

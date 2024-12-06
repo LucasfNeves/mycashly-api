@@ -1,3 +1,4 @@
+import { UserNotFoundError } from '../../../errors/user-not-found-error'
 import { UsersRepository } from '../../repositories/interfaces/users-repository'
 
 interface GetUserByIdUseCaseResponse {
@@ -5,7 +6,7 @@ interface GetUserByIdUseCaseResponse {
     id: string
     name: string
     email: string
-  } | null
+  }
 }
 
 export class GetUserByIdUseCase {
@@ -13,6 +14,10 @@ export class GetUserByIdUseCase {
 
   async execute(userId: string): Promise<GetUserByIdUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
+
+    if (!user) {
+      throw new UserNotFoundError()
+    }
 
     return {
       user,

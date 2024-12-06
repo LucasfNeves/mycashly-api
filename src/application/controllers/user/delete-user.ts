@@ -1,15 +1,15 @@
+import { ok, serverError } from '../helpers/http'
 import { UserNotFoundError } from '../../../errors/user-not-found-error'
 import { IController, IRequest, IResponse } from '../../interfaces/IController'
-import { GetUserByIdUseCase } from '../../use-cases/user/get-user-by-id'
-import { ok, serverError } from '../helpers/http'
-import { userNotFoundResponse } from '../helpers/user'
+import { DeleteUserUseCase } from '../../use-cases/user/delete-user'
 import {
   checkIfIdIsValid,
   generateInvalidIdResponse,
 } from '../helpers/validation'
+import { userNotFoundResponse } from '../helpers/user'
 
-export class GetUserByIdController implements IController {
-  constructor(private readonly getUserByIdUseCase: GetUserByIdUseCase) {}
+export class DeleteUserController implements IController {
+  constructor(private readonly deleteUserUseCase: DeleteUserUseCase) {}
   async handle({ accountId }: IRequest): Promise<IResponse> {
     try {
       const userId = accountId
@@ -24,14 +24,20 @@ export class GetUserByIdController implements IController {
         return generateInvalidIdResponse()
       }
 
-      const user = await this.getUserByIdUseCase.execute(userId)
+      const deleteUser = await this.deleteUserUseCase.execute(userId)
 
-      if (!user) {
+      if (!deleteUser) {
         return userNotFoundResponse()
       }
 
-      return ok({ ...user })
+      return ok({ ...deleteUser })
     } catch (error) {
+      console.error(error)
+
+      if (error instanceof Error && 'code' in error && error.code === 'P2025') {
+        return userNotFoundResponse()
+      }
+
       if (error instanceof UserNotFoundError) {
         return userNotFoundResponse()
       }

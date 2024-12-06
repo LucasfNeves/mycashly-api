@@ -23,12 +23,14 @@ export const unauthorized = (body: ResponseBody): Response => {
   }
 }
 
-export const userNotFound = (): Response => {
+export const userNotFound = ({
+  errorMessage,
+}: {
+  errorMessage: string
+}): Response => {
   return {
     statusCode: 404,
-    body: {
-      errorMessage: 'User not found',
-    },
+    body: { errorMessage },
   }
 }
 

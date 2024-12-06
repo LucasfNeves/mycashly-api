@@ -3,6 +3,7 @@ import { expect, describe, it, beforeEach, vi } from 'vitest'
 import { GetUserByIdUseCase } from './get-user-by-id'
 import { RegisterUseCase } from './register'
 import { faker } from '@faker-js/faker'
+import { UserNotFoundError } from '../../../errors/user-not-found-error'
 
 describe('Register Use Case', () => {
   let usersRepository: inMemoryUsersRepository
@@ -61,5 +62,16 @@ describe('Register Use Case', () => {
 
     // expect
     expect(promisse).rejects.toThrow()
+  })
+
+  it('should throw to userNotFound errors ', async () => {
+    // arrange
+    const userId = 'invalid_id'
+
+    // act
+    const promise = sut.execute(userId)
+
+    // expect
+    expect(promise).rejects.toBeInstanceOf(UserNotFoundError)
   })
 })

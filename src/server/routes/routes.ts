@@ -9,6 +9,10 @@ import { routeAdapter } from '../../adapters/route-adapter'
 import { Router } from 'express'
 import { middlewareAdapter } from '../../adapters/middleware-adapter'
 import { makeAuthenticationMiddleware } from '../../factories/make-authenticate-middleware'
+import {
+  makeGetAllCategoriesController,
+  makeValidateCategoryOwnershipController,
+} from '../../factories/categories'
 
 export const router = Router()
 
@@ -18,7 +22,9 @@ router.post('/auth/signup', routeAdapter(makeCreateUserController()))
 
 router.post('/auth/signin', routeAdapter(makeAuthenticateController()))
 
-/** Users Authenticated */
+/** Authenticated */
+
+/** Users */
 
 router.get(
   '/users/me',
@@ -36,6 +42,20 @@ router.delete(
   '/users',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteUserController()),
+)
+
+/** Categories */
+
+router.get(
+  '/categories',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetAllCategoriesController()),
+)
+
+router.get(
+  '/categorie/:categoryId',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeValidateCategoryOwnershipController()),
 )
 
 /** Transactions */

@@ -1,6 +1,8 @@
 export interface IRequest {
   body: Record<string, unknown>
-  params?: Record<string, unknown>
+  params?: {
+    categoryId?: string
+  }
   accountId?: string
 }
 

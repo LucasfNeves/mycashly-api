@@ -12,14 +12,14 @@ describe('Register Use Case', () => {
     const registerUseCase = new RegisterUseCase(usersRepository)
 
     // act (Chama o controller a ser testado)
-    const { createdUser } = await registerUseCase.execute({
+    const { acessToken } = await registerUseCase.execute({
       name: faker.person.fullName(),
       email: faker.internet.email(),
-      password: faker.internet.password({ length: 7 }),
+      password: '123456',
     })
 
     // assert (Fazer a sua expectativa de resultado)
-    expect(createdUser).toBeTruthy()
+    expect(acessToken).toBeTruthy()
   })
 
   it('should hash user password upon registration', async () => {
@@ -27,14 +27,32 @@ describe('Register Use Case', () => {
     const usersRepository = new inMemoryUsersRepository()
     const registerUseCase = new RegisterUseCase(usersRepository)
 
-    // act (Chama o controller a ser testado)
-    const { createdUser } = await registerUseCase.execute({
+    const userData = {
       name: faker.person.fullName(),
       email: faker.internet.email(),
       password: '123456',
+    }
+
+    // act (Chama o controller a ser testado)
+    await registerUseCase.execute({
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
     })
 
-    const isPasswordHashed = await compare('123456', createdUser.password)
+    // Recupera o usuário do banco de dados
+    const userFromDb = await usersRepository.findByEmail(userData.email)
+
+    // Verifica se o usuário foi encontrado
+    if (!userFromDb) {
+      throw new Error('User not found')
+    }
+
+    // Compara a senha fornecida com a senha hasheada
+    const isPasswordHashed = await compare(
+      userData.password,
+      userFromDb.password,
+    )
 
     // assert (Fazer a sua expectativa de resultado)
     expect(isPasswordHashed).toBe(true)

@@ -33,7 +33,7 @@ export class AuthenticateUseCase {
     }
 
     const acessToken = sign({ sub: user.id }, env.jwtSecret!, {
-      expiresIn: '1d',
+      expiresIn: '7d',
     })
 
     return { acessToken }

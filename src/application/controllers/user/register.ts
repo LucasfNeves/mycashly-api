@@ -4,7 +4,6 @@ import { z } from 'zod'
 import { badRequest, created, serverError } from '../helpers/http'
 
 import { createUserSchema } from '../../../schemas/user'
-import { User } from '@prisma/client'
 import { IController, IRequest, IResponse } from '../../interfaces/IController'
 
 interface RegisterUserUseCaseParams {
@@ -12,7 +11,7 @@ interface RegisterUserUseCaseParams {
     email: string
     name: string
     password: string
-  }) => Promise<{ createdUser: User }>
+  }) => Promise<{ acessToken: string }>
 }
 
 export class CreateUserController implements IController {
@@ -24,13 +23,13 @@ export class CreateUserController implements IController {
     try {
       const { email, name, password } = await createUserSchema.parseAsync(body)
 
-      const createdUser = await this.registerUserUseCase.execute({
+      const { acessToken } = await this.registerUserUseCase.execute({
         email,
         name,
         password,
       })
 
-      return created(createdUser)
+      return created({ acessToken })
     } catch (error) {
       if (error instanceof UserAlreadyExists) {
         return badRequest({

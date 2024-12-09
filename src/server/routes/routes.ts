@@ -12,24 +12,24 @@ import { makeAuthenticationMiddleware } from '../../factories/make-authenticate-
 
 export const router = Router()
 
-/** Users */
+/** Authenticate */
 
-router.post('/users', routeAdapter(makeCreateUserController()))
+router.post('/auth/signup', routeAdapter(makeCreateUserController()))
 
-router.post('/sessions', routeAdapter(makeAuthenticateController()))
+router.post('/auth/signin', routeAdapter(makeAuthenticateController()))
 
 /** Users Authenticated */
+
+router.get(
+  '/users/me',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetUserByIdController()),
+)
 
 router.patch(
   '/users',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeUpdateUserController()),
-)
-
-router.get(
-  '/users',
-  middlewareAdapter(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetUserByIdController()),
 )
 
 router.delete(

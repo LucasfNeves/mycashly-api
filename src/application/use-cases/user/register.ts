@@ -1,23 +1,23 @@
+import { sign } from 'jsonwebtoken'
 import { UserAlreadyExists } from '../../../errors/user-already-exists'
 import { UsersRepository } from '../../repositories/interfaces/users-repository'
-import { User } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-
-interface RegisterUseCasesParams {
-  name: string
+import { env } from '../../../config/env'
+interface RegisterUserUseCaseParams {
   email: string
+  name: string
   password: string
 }
 
 interface RegisterUseCaseResponse {
-  createdUser: User
+  acessToken: string
 }
 
 export class RegisterUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
   async execute(
-    params: RegisterUseCasesParams,
+    params: RegisterUserUseCaseParams,
   ): Promise<RegisterUseCaseResponse> {
     const { name, email, password } = params
 
@@ -35,6 +35,12 @@ export class RegisterUseCase {
       password: hasedPassword,
     })
 
-    return { createdUser }
+    const acessToken = sign({ sub: createdUser.id }, env.jwtSecret!, {
+      expiresIn: '7d',
+    })
+
+    return {
+      acessToken,
+    }
   }
 }

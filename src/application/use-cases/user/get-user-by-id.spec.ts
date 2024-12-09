@@ -17,22 +17,36 @@ describe('Register Use Case', () => {
 
   it('should get user by id sucessfully', async () => {
     // arrange (Prepara o teste para ser executado)
-    const { createdUser } = await createUserUseCase.execute({
+    const userMock = {
       name: faker.person.fullName(),
       email: faker.internet.email(),
       password: faker.internet.password({ length: 7 }),
+    }
+
+    await createUserUseCase.execute({
+      name: userMock.name,
+      email: userMock.email,
+      password: userMock.password,
     })
 
     // act (Chama o controller a ser testado)
-    const result = await sut.execute(createdUser.id)
+    const result = await sut.execute('1')
 
     // assert (Fazer a sua expectativa de resultado)
-    expect(result.user).toEqual(createdUser)
+    expect(result).toEqual(
+      expect.objectContaining({
+        user: expect.objectContaining({
+          id: '1',
+          name: userMock.name,
+          email: userMock.email,
+        }),
+      }),
+    )
   })
 
   it('should call GetUserByIdRepository with correct params', async () => {
     // arrange (Prepara o teste para ser executado)
-    const { createdUser } = await createUserUseCase.execute({
+    await createUserUseCase.execute({
       name: faker.person.fullName(),
       email: faker.internet.email(),
       password: faker.internet.password({ length: 7 }),
@@ -41,15 +55,15 @@ describe('Register Use Case', () => {
     const executeSpy = vi.spyOn(usersRepository, 'findById')
 
     // act (Chama o controller a ser testado)
-    await sut.execute(createdUser.id)
+    await sut.execute('1')
 
     // assert (Fazer a sua expectativa de resultado)
-    expect(executeSpy).toHaveBeenCalledWith(createdUser.id)
+    expect(executeSpy).toHaveBeenCalledWith('1')
   })
 
   it('should throw an error when repository execution fails ', async () => {
     // arrange
-    const { createdUser } = await createUserUseCase.execute({
+    await createUserUseCase.execute({
       name: faker.person.fullName(),
       email: faker.internet.email(),
       password: faker.internet.password({ length: 7 }),
@@ -58,7 +72,7 @@ describe('Register Use Case', () => {
     vi.spyOn(usersRepository, 'findById').mockRejectedValue(new Error())
 
     // act
-    const promisse = sut.execute(createdUser.id)
+    const promisse = sut.execute('1')
 
     // expect
     expect(promisse).rejects.toThrow()

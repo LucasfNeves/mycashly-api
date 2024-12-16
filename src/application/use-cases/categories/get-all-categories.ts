@@ -10,11 +10,11 @@ export class GetAllCategoriesUseCase {
   constructor(private readonly categoriesRepository: CategoriesRepository) {}
 
   async execute(userId: string) {
-    if (!userId) {
+    const categories = await this.categoriesRepository.findyAllByUserId(userId)
+
+    if (!categories || categories.length === 0) {
       throw new UserNotFoundError()
     }
-
-    const categories = await this.categoriesRepository.findyAllByUserId(userId)
 
     return { categories }
   }

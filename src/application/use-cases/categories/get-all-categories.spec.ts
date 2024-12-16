@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest'
 import { inMemoryCategoriesRepository } from '../../repositories/in-memory/in-memory-category-repository'
 import { GetAllCategoriesUseCase } from './get-all-categories'
-import { UserNotFoundError } from '../../../errors/user-not-found-error'
+import { NotFoundException } from '../../../errors/not-found-exception'
 
 describe('Authenticate User Use Case', () => {
   let categoriesRepository: inMemoryCategoriesRepository
@@ -31,7 +31,7 @@ describe('Authenticate User Use Case', () => {
     const promise = sut.execute(userId)
 
     // Assert
-    expect(promise).rejects.toBeInstanceOf(UserNotFoundError)
+    expect(promise).rejects.toBeInstanceOf(NotFoundException)
   })
 
   it('should call GetAllCategoriesUseCase with correct params', async () => {

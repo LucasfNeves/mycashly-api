@@ -1,12 +1,12 @@
-import { UserNotFoundError } from '../../../errors/user-not-found-error'
 import { IController, IRequest, IResponse } from '../../interfaces/IController'
-import { ok, serverError } from '../helpers/http'
+import { notFoundError, ok, serverError } from '../helpers/http'
 import {
   checkIfIdIsValid,
   generateInvalidIdResponse,
 } from '../helpers/validation'
 import { userNotFoundResponse } from '../helpers/user'
 import { GetAllCategoriesUseCase } from '../../use-cases/categories'
+import { NotFoundException } from '../../../errors/not-found-exception'
 
 export class GetAllCategoriesController implements IController {
   constructor(
@@ -17,7 +17,7 @@ export class GetAllCategoriesController implements IController {
     try {
       const userId = accountId
       if (!userId) {
-        throw new UserNotFoundError()
+        return userNotFoundResponse()
       }
 
       const idIsValid = checkIfIdIsValid(userId)
@@ -31,8 +31,9 @@ export class GetAllCategoriesController implements IController {
       return ok({ ...categories })
     } catch (error) {
       console.error(error)
-      if (error instanceof UserNotFoundError) {
-        return userNotFoundResponse()
+
+      if (error instanceof NotFoundException) {
+        return notFoundError({ errorMessage: error.message })
       }
 
       return serverError()

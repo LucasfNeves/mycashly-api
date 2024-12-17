@@ -9,10 +9,8 @@ import { routeAdapter } from '../../adapters/route-adapter'
 import { Router } from 'express'
 import { middlewareAdapter } from '../../adapters/middleware-adapter'
 import { makeAuthenticationMiddleware } from '../../factories/make-authenticate-middleware'
-import {
-  makeGetAllCategoriesController,
-  makeValidateCategoryOwnershipController,
-} from '../../factories/categories'
+import { makeGetAllCategoriesController } from '../../factories/categories'
+import { makeCreateTransactionsController } from '../../factories/transactions'
 
 export const router = Router()
 
@@ -52,12 +50,9 @@ router.get(
   routeAdapter(makeGetAllCategoriesController()),
 )
 
-router.get(
-  '/categorie/:categoryId',
-  middlewareAdapter(makeAuthenticationMiddleware()),
-  routeAdapter(makeValidateCategoryOwnershipController()),
-)
-
 /** Transactions */
-
-/** Transactions Authenticated */
+router.post(
+  '/transactions',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeCreateTransactionsController()),
+)

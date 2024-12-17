@@ -1,12 +1,6 @@
-import {
-  GetAllCategoriesController,
-  ValidateCategoryOwnershipController,
-} from '../application/controllers/categories'
+import { GetAllCategoriesController } from '../application/controllers/categories'
 import { PrismaCategoriesRepository } from '../application/repositories/postgres/prisma-categories-repository'
-import {
-  GetAllCategoriesUseCase,
-  ValidateCategoryOwnershipUseCase,
-} from '../application/use-cases/categories'
+import { GetAllCategoriesUseCase } from '../application/use-cases/categories'
 
 export const makeGetAllCategoriesController = () => {
   const categoriesRepository = new PrismaCategoriesRepository()
@@ -20,17 +14,4 @@ export const makeGetAllCategoriesController = () => {
   )
 
   return getAllCategoriesController
-}
-
-export const makeValidateCategoryOwnershipController = () => {
-  const categoriesRepository = new PrismaCategoriesRepository()
-
-  const validateCategoryOwnershipUseCase = new ValidateCategoryOwnershipUseCase(
-    categoriesRepository,
-  )
-
-  const validateCategoryOwnershipController =
-    new ValidateCategoryOwnershipController(validateCategoryOwnershipUseCase)
-
-  return validateCategoryOwnershipController
 }

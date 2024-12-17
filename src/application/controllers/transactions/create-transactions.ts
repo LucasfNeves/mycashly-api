@@ -1,9 +1,15 @@
+import { z } from 'zod'
 import { NotFoundException } from '../../../errors/not-found-exception'
 import { UserNotFoundError } from '../../../errors/user-not-found-error'
 import { createtransactionSchema } from '../../../schemas/transactions'
 import { IController, IRequest, IResponse } from '../../interfaces/IController'
 import { CreateTransactionUseCase } from '../../use-cases/transactions/create-transactions'
-import { created, notFoundError, serverError } from '../helpers/http'
+import {
+  badRequest,
+  created,
+  notFoundError,
+  serverError,
+} from '../helpers/http'
 import { userNotFoundResponse } from '../helpers/user'
 import {
   checkIfIdIsValid,
@@ -43,6 +49,11 @@ export class CreateTransactionsController implements IController {
 
       return created({ ...transaction })
     } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errorMessage = error.errors[0].message
+        return badRequest({ errorMessage })
+      }
+
       if (error instanceof UserNotFoundError) {
         return userNotFoundResponse()
       }

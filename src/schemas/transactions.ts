@@ -4,10 +4,10 @@ import { z } from 'zod'
 export const createtransactionSchema = z.object({
   categoryId: z
     .string({
-      required_error: 'User_id is required',
+      required_error: 'categoryId is required',
     })
     .uuid({
-      message: 'User ID must be a valid UUID',
+      message: 'Category ID must be a valid UUID',
     }),
   name: z
     .string({
@@ -26,7 +26,7 @@ export const createtransactionSchema = z.object({
     }),
   type: z.enum(['INCOME', 'EXPENSE', 'INVESTMENT'], {
     errorMap: () => ({
-      message: 'Type must be EXPENSE, EARNING, or INVESTMENT.',
+      message: 'Type must be INCOME, EXPENSE, or INVESTMENT.',
     }),
   }),
   value: z

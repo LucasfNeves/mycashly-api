@@ -1,10 +1,10 @@
 import { TransactionType } from '@prisma/client'
 import { IdGeneratorAdapter } from '../../../adapters/id-generator'
-import { NotFoundException } from '../../../errors/not-found-exception'
 import { UserNotFoundError } from '../../../errors/user-not-found-error'
-import { CategoriesRepository } from '../../repositories/interfaces/categories-repository'
 import { TransactionsRepository } from '../../repositories/interfaces/transaction-repository'
 import { UsersRepository } from '../../repositories/interfaces/users-repository'
+import { CategoriesRepository } from '../../repositories/interfaces/categories-repository'
+import { NotFoundException } from '../../../errors/not-found-exception'
 
 interface CreateTransactionUseCaseParams {
   categoryId: string
@@ -32,16 +32,16 @@ export class CreateTransactionUseCase {
       throw new UserNotFoundError()
     }
 
+    const transactionId = this.idGeneratorAdapter.execute()
+
     const category = await this.categoriesRepository.findFirst(
-      userId,
       categoryId,
+      userId,
     )
 
     if (!category) {
       throw new NotFoundException('Category not found')
     }
-
-    const transactionId = this.idGeneratorAdapter.execute()
 
     const transaction = await this.transactionRepository.create({
       id: transactionId,

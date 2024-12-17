@@ -5,9 +5,7 @@ import { prisma } from '../../../lib/prisma'
 export class PrismaTransactionsRepository implements TransactionsRepository {
   async create(createTransactionParams: Prisma.TransactionsCreateInput) {
     const transaction = await prisma.transactions.create({
-      data: {
-        ...createTransactionParams,
-      },
+      data: createTransactionParams,
     })
 
     return transaction

@@ -1,10 +1,19 @@
-import { Transactions } from '@prisma/client'
+import { TransactionType } from '@prisma/client'
 import { IdGeneratorAdapter } from '../../../adapters/id-generator'
 import { NotFoundException } from '../../../errors/not-found-exception'
 import { UserNotFoundError } from '../../../errors/user-not-found-error'
 import { CategoriesRepository } from '../../repositories/interfaces/categories-repository'
 import { TransactionsRepository } from '../../repositories/interfaces/transaction-repository'
 import { UsersRepository } from '../../repositories/interfaces/users-repository'
+
+interface CreateTransactionUseCaseParams {
+  categoryId: string
+  name: string
+  value: number
+  date: Date | string
+  type: TransactionType
+  userId: string
+}
 
 export class CreateTransactionUseCase {
   constructor(
@@ -13,9 +22,9 @@ export class CreateTransactionUseCase {
     private readonly idGeneratorAdapter: IdGeneratorAdapter,
     private readonly categoriesRepository: CategoriesRepository,
   ) {}
-  async execute(createTransactionParams: Transactions) {
-    const userId = createTransactionParams.userId
-    const categoryId = createTransactionParams.categoryId
+  async execute(createTransactionParams: CreateTransactionUseCaseParams) {
+    const { categoryId, date, name, type, value, userId } =
+      createTransactionParams
 
     const user = await this.usersRepository.findById(userId)
 
@@ -25,7 +34,7 @@ export class CreateTransactionUseCase {
 
     const category = await this.categoriesRepository.findFirst(
       userId,
-      categoryId!,
+      categoryId,
     )
 
     if (!category) {
@@ -35,8 +44,12 @@ export class CreateTransactionUseCase {
     const transactionId = this.idGeneratorAdapter.execute()
 
     const transaction = await this.transactionRepository.create({
-      ...createTransactionParams,
       id: transactionId,
+      category: { connect: { id: categoryId } },
+      date,
+      name,
+      type,
+      value,
       User: { connect: { id: userId } },
     })
 

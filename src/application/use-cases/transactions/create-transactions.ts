@@ -32,7 +32,11 @@ export class CreateTransactionUseCase {
       throw new UserNotFoundError()
     }
 
-    const transactionId = this.idGeneratorAdapter.execute()
+    const transactionId = await this.idGeneratorAdapter.execute()
+
+    if (!transactionId) {
+      throw new NotFoundException('Transaction ID not found')
+    }
 
     const category = await this.categoriesRepository.findFirst(
       categoryId,

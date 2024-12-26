@@ -3,8 +3,8 @@ import { TransactionType } from '@prisma/client'
 
 export const transaction = {
   id: faker.string.uuid(),
-  user_id: faker.string.uuid(),
-  category_id: faker.string.uuid(),
+  userId: faker.string.uuid(),
+  categoryId: faker.string.uuid(),
   name: faker.commerce.productName(),
   date: faker.date.anytime().toISOString(),
   type: 'INCOME' as TransactionType,

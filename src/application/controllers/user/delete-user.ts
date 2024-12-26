@@ -10,10 +10,8 @@ import { userNotFoundResponse } from '../helpers/user'
 
 export class DeleteUserController implements IController {
   constructor(private readonly deleteUserUseCase: DeleteUserUseCase) {}
-  async handle({ accountId }: IRequest): Promise<IResponse> {
+  async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-      const userId = accountId
-
       if (!userId) {
         throw new UserNotFoundError()
       }

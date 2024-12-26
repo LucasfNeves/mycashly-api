@@ -34,9 +34,9 @@ export class AuthenticationMiddleware implements IMiddleware {
 
       const payload = verify(token, env.jwtSecret!) as Payload
 
-      const { sub: accountId } = payload
+      const { sub: userId } = payload
 
-      if (!accountId) {
+      if (!userId) {
         return {
           statusCode: 401,
           body: { error: 'Invalid Token' },
@@ -45,7 +45,7 @@ export class AuthenticationMiddleware implements IMiddleware {
 
       return {
         data: {
-          accountId,
+          userId,
         },
       }
     } catch (error) {

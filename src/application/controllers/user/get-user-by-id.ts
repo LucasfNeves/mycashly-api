@@ -10,10 +10,8 @@ import {
 
 export class GetUserByIdController implements IController {
   constructor(private readonly getUserByIdUseCase: GetUserByIdUseCase) {}
-  async handle({ accountId }: IRequest): Promise<IResponse> {
+  async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-      const userId = accountId
-
       if (!userId) {
         throw new UserNotFoundError()
       }

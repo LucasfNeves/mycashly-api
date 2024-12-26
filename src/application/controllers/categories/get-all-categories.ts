@@ -13,9 +13,8 @@ export class GetAllCategoriesController implements IController {
     private readonly getAllCategoriesUseCase: GetAllCategoriesUseCase,
   ) {}
 
-  async handle({ accountId }: IRequest): Promise<IResponse> {
+  async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-      const userId = accountId
       if (!userId) {
         return userNotFoundResponse()
       }

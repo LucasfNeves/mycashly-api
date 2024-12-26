@@ -2,8 +2,9 @@ export interface IRequest {
   body: Record<string, unknown>
   params?: {
     categoryId?: string
+    transactionId?: string
   }
-  accountId?: string
+  userId?: string
 }
 
 export interface IResponse {

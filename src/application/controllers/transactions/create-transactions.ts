@@ -21,12 +21,10 @@ export class CreateTransactionsController implements IController {
     private readonly createTransactionUseCase: CreateTransactionUseCase,
   ) {}
 
-  async handle({ body, accountId }: IRequest): Promise<IResponse> {
+  async handle({ body, userId }: IRequest): Promise<IResponse> {
     try {
       const { categoryId, name, value, date, type } =
         await createtransactionSchema.parseAsync(body)
-
-      const userId = accountId
 
       if (!userId) {
         return userNotFoundResponse()

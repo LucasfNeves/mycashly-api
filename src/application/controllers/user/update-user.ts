@@ -13,10 +13,8 @@ import { UserNotFoundError } from '../../../errors/user-not-found-error'
 export class UpdateUserController implements IController {
   constructor(private readonly updateUserUseCase: UpdateUserUseCase) {}
 
-  async handle({ body, accountId }: IRequest): Promise<IResponse> {
+  async handle({ body, userId }: IRequest): Promise<IResponse> {
     try {
-      const userId = accountId
-
       if (!userId) {
         throw new UserNotFoundError()
       }

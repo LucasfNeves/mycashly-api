@@ -2,9 +2,9 @@ import { faker } from '@faker-js/faker'
 import { TransactionType } from '@prisma/client'
 
 export const transaction = {
-  id: faker.string.uuid(),
+  id: '1',
   userId: faker.string.uuid(),
-  categoryId: faker.string.uuid(),
+  categoryId: '3',
   name: faker.commerce.productName(),
   date: faker.date.anytime().toISOString(),
   type: 'INCOME' as TransactionType,

@@ -10,7 +10,10 @@ import { Router } from 'express'
 import { middlewareAdapter } from '../../adapters/middleware-adapter'
 import { makeAuthenticationMiddleware } from '../../factories/make-authenticate-middleware'
 import { makeGetAllCategoriesController } from '../../factories/categories'
-import { makeCreateTransactionsController } from '../../factories/transactions'
+import {
+  makeCreateTransactionsController,
+  makeUpdateTransactionsController,
+} from '../../factories/transactions'
 
 export const router = Router()
 
@@ -55,4 +58,10 @@ router.post(
   '/transactions',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeCreateTransactionsController()),
+)
+
+router.patch(
+  '/transactions/:transactionId',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeUpdateTransactionsController()),
 )

@@ -13,6 +13,7 @@ import { makeGetAllCategoriesController } from '../../factories/categories'
 import {
   makeCreateTransactionsController,
   makeDeleteTransactionsController,
+  makeGetTransactionsByUserIdController,
   makeUpdateTransactionsController,
 } from '../../factories/transactions'
 
@@ -71,4 +72,10 @@ router.delete(
   '/transactions/:transactionId',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteTransactionsController()),
+)
+
+router.get(
+  '/transactions',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetTransactionsByUserIdController()),
 )

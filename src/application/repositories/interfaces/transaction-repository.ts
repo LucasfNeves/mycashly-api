@@ -9,4 +9,6 @@ export interface TransactionsRepository {
     transactionId: string,
     updateTransactionParams: Prisma.TransactionsUpdateInput,
   ): Promise<Transactions | null>
+
+  delete(transactionId: string): Promise<Transactions | null>
 }

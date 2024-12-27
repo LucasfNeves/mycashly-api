@@ -66,4 +66,20 @@ export class inMemoryTransactionsRepository implements TransactionsRepository {
 
     return updatedTransaction
   }
+
+  async delete(transactionId: string): Promise<Transactions | null> {
+    const transaction = this.transactions.find(
+      (transaction) => transaction.id === transactionId,
+    )
+
+    if (!transaction) {
+      return null
+    }
+
+    this.transactions = this.transactions.filter(
+      (transaction) => transaction.id !== transactionId,
+    )
+
+    return transaction
+  }
 }

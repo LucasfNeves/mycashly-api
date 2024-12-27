@@ -2,12 +2,14 @@ import { IdGeneratorAdapter } from '../adapters/id-generator'
 import {
   UpdateTransactionsController,
   CreateTransactionsController,
+  DeleteTransactionController,
 } from '../application/controllers/transactions/index'
 import { PrismaUsersRepository } from '../application/repositories/postgres'
 import { PrismaCategoriesRepository } from '../application/repositories/postgres/prisma-categories-repository'
 import { PrismaTransactionsRepository } from '../application/repositories/postgres/prisma-transaction-repository'
 import {
   CreateTransactionUseCase,
+  DeleteTransactionUseCase,
   UpdateTransactionUseCase,
 } from '../application/use-cases/transactions/index'
 
@@ -45,4 +47,18 @@ export const makeUpdateTransactionsController = () => {
   )
 
   return updateTransactionsController
+}
+
+export const makeDeleteTransactionsController = () => {
+  const transactionsRepository = new PrismaTransactionsRepository()
+
+  const deleteTransactionUseCase = new DeleteTransactionUseCase(
+    transactionsRepository,
+  )
+
+  const deleteTransactionsController = new DeleteTransactionController(
+    deleteTransactionUseCase,
+  )
+
+  return deleteTransactionsController
 }

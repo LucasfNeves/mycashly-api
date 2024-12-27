@@ -11,4 +11,6 @@ export interface TransactionsRepository {
   ): Promise<Transactions | null>
 
   delete(transactionId: string): Promise<Transactions | null>
+
+  findByUserId(userId: string): Promise<Transactions[] | null>
 }

@@ -12,6 +12,7 @@ import { makeAuthenticationMiddleware } from '../../factories/make-authenticate-
 import { makeGetAllCategoriesController } from '../../factories/categories'
 import {
   makeCreateTransactionsController,
+  makeDeleteTransactionsController,
   makeUpdateTransactionsController,
 } from '../../factories/transactions'
 
@@ -64,4 +65,10 @@ router.patch(
   '/transactions/:transactionId',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeUpdateTransactionsController()),
+)
+
+router.delete(
+  '/transactions/:transactionId',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeDeleteTransactionsController()),
 )

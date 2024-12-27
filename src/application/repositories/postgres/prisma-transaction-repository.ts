@@ -1,6 +1,7 @@
 import { Prisma, Transactions } from '@prisma/client'
 import { TransactionsRepository } from '../interfaces/transaction-repository'
 import { prisma } from '../../../lib/prisma'
+import { TransactionsFilters } from '../../use-cases/transactions'
 
 export class PrismaTransactionsRepository implements TransactionsRepository {
   async create(createTransactionParams: Prisma.TransactionsCreateInput) {
@@ -35,10 +36,15 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     return transaction
   }
 
-  async findByUserId(userId: string) {
+  async findByUserId(userId: string, filters: TransactionsFilters) {
     const transaction = await prisma.transactions.findMany({
       where: {
         userId: userId,
+        type: filters.type,
+        date: {
+          gte: new Date(Date.UTC(filters.year, filters.month)),
+          lt: new Date(Date.UTC(filters.year, filters.month + 1)),
+        },
       },
     })
 

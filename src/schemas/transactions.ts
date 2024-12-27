@@ -56,3 +56,37 @@ export const updateTransactionSchema = createtransactionSchema
   .strict({
     message: 'some provided field is not allowed.',
   })
+
+export const validateTransactionsQueryParams = z.object({
+  month: z
+    .number({
+      required_error: 'Month is required',
+      invalid_type_error: 'Month must be a number',
+    })
+    .int({
+      message: 'Month must be an integer',
+    })
+    .min(1, {
+      message: 'Month must be greater than or equal to 1',
+    })
+    .max(12, {
+      message: 'Month must be less than or equal to 12',
+    }),
+
+  year: z
+    .number({
+      required_error: 'Year is required',
+      invalid_type_error: 'Year must be a number',
+    })
+    .int({
+      message: 'Year must be an integer',
+    })
+    .min(1900, {
+      message: 'Year must be greater than or equal to 1900',
+    })
+    .max(new Date().getFullYear(), {
+      message: `Year must be less than or equal to ${new Date().getFullYear()}`,
+    }),
+
+  type: z.enum(['INCOME', 'EXPENSE', 'INVESTMENT']).optional(),
+})

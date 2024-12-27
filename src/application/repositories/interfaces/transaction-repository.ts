@@ -1,4 +1,5 @@
 import { Prisma, Transactions } from '@prisma/client'
+import { TransactionsFilters } from '../../use-cases/transactions'
 
 export interface TransactionsRepository {
   create(
@@ -12,5 +13,8 @@ export interface TransactionsRepository {
 
   delete(transactionId: string): Promise<Transactions | null>
 
-  findByUserId(userId: string): Promise<Transactions[] | null>
+  findByUserId(
+    userId: string,
+    filters: TransactionsFilters,
+  ): Promise<Transactions[] | null>
 }

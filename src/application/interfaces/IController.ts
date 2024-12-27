@@ -1,8 +1,15 @@
+import { TransactionType } from '@prisma/client'
+
 export interface IRequest {
   body: Record<string, unknown>
   params?: {
     categoryId?: string
     transactionId?: string
+  }
+  query?: {
+    month: number
+    year: number
+    type?: TransactionType
   }
   userId?: string
 }

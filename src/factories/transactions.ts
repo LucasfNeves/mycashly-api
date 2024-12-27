@@ -3,6 +3,7 @@ import {
   UpdateTransactionsController,
   CreateTransactionsController,
   DeleteTransactionController,
+  GetTransactionsByUserIdController,
 } from '../application/controllers/transactions/index'
 import { PrismaUsersRepository } from '../application/repositories/postgres'
 import { PrismaCategoriesRepository } from '../application/repositories/postgres/prisma-categories-repository'
@@ -10,6 +11,7 @@ import { PrismaTransactionsRepository } from '../application/repositories/postgr
 import {
   CreateTransactionUseCase,
   DeleteTransactionUseCase,
+  GetTransactionsByUserIdUseCase,
   UpdateTransactionUseCase,
 } from '../application/use-cases/transactions/index'
 
@@ -61,4 +63,17 @@ export const makeDeleteTransactionsController = () => {
   )
 
   return deleteTransactionsController
+}
+
+export const makeGetTransactionsByUserIdController = () => {
+  const transactionsRepository = new PrismaTransactionsRepository()
+
+  const getTransactionsByUserIdUseCase = new GetTransactionsByUserIdUseCase(
+    transactionsRepository,
+  )
+
+  const getTransactionsByUserIdController =
+    new GetTransactionsByUserIdController(getTransactionsByUserIdUseCase)
+
+  return getTransactionsByUserIdController
 }

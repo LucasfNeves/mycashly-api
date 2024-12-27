@@ -82,4 +82,12 @@ export class inMemoryTransactionsRepository implements TransactionsRepository {
 
     return transaction
   }
+
+  async findByUserId(userId: string): Promise<Transactions[] | null> {
+    const transactions = this.transactions.filter(
+      (transaction) => transaction.userId === userId,
+    )
+
+    return transactions
+  }
 }

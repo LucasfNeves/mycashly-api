@@ -1,16 +1,26 @@
 import { Request, Response } from 'express'
-
 import { IController } from '../application/interfaces/IController'
+import { TransactionType } from '@prisma/client'
 
 // Currying
 export function routeAdapter(controller: IController) {
   return async (request: Request, response: Response) => {
-    const { statusCode, body } = await controller.handle({
-      body: request.body,
-      params: request.params,
-      userId: request.metadata?.userId,
-    })
+    try {
+      const { statusCode, body } = await controller.handle({
+        body: request.body,
+        params: request.params,
+        query: request.query as unknown as {
+          month: number
+          year: number
+          type?: TransactionType
+        },
+        userId: request.metadata?.userId,
+      })
 
-    response.status(statusCode).send(body)
+      response.status(statusCode).send(body)
+    } catch (error) {
+      console.error('Error in routeAdapter:', error)
+      response.status(500).send({ error: 'Internal server error' })
+    }
   }
 }

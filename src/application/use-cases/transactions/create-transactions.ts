@@ -53,6 +53,6 @@ export class CreateTransactionUseCase {
       value,
     })
 
-    return { ...transaction }
+    return { transaction }
   }
 }

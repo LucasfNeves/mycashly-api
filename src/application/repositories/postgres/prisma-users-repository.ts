@@ -64,6 +64,11 @@ export class PrismaUsersRepository implements UsersRepository {
       where: {
         id: userId,
       },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
     })
 
     if (!user) {
@@ -92,6 +97,64 @@ export class PrismaUsersRepository implements UsersRepository {
       id: user.id,
       name: user.name,
       email: user.email,
+    }
+  }
+
+  async getUserBalance(userId: string): Promise<{
+    expenses: number | Prisma.Decimal
+    incomes: number | Prisma.Decimal
+    investments: number | Prisma.Decimal
+    balance: number | Prisma.Decimal
+  }> {
+    const {
+      _sum: { value: totalExpenses },
+    } = await prisma.transactions.aggregate({
+      where: {
+        userId,
+        type: 'EXPENSE',
+      },
+      _sum: {
+        value: true,
+      },
+    })
+
+    const {
+      _sum: { value: totalIncomes },
+    } = await prisma.transactions.aggregate({
+      where: {
+        userId,
+        type: 'INCOME',
+      },
+      _sum: {
+        value: true,
+      },
+    })
+
+    const {
+      _sum: { value: totalInvestments },
+    } = await prisma.transactions.aggregate({
+      where: {
+        userId,
+        type: 'INVESTMENT',
+      },
+      _sum: {
+        value: true,
+      },
+    })
+
+    const _totalExpenses = totalExpenses || new Prisma.Decimal(0)
+    const _totalIncomes = totalIncomes || new Prisma.Decimal(0)
+    const _totalInvestments = totalInvestments || new Prisma.Decimal(0)
+
+    const balance = new Prisma.Decimal(_totalIncomes)
+      .minus(new Prisma.Decimal(_totalExpenses))
+      .minus(new Prisma.Decimal(_totalInvestments))
+
+    return {
+      expenses: _totalExpenses,
+      incomes: _totalIncomes,
+      investments: _totalInvestments,
+      balance: balance,
     }
   }
 }

@@ -1,4 +1,5 @@
 import { Prisma, User } from '@prisma/client'
+import { Decimal } from '@prisma/client/runtime/library'
 
 export interface UsersRepository {
   findByEmail(email: string): Promise<User | null>
@@ -14,4 +15,11 @@ export interface UsersRepository {
     name: string
     email: string
   } | null>
+
+  getUserBalance(userId: string): Promise<{
+    expenses: number | Decimal
+    incomes: number | Decimal
+    investments: number | Decimal
+    balance: number | Decimal
+  }>
 }

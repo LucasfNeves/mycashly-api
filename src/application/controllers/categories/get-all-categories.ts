@@ -29,8 +29,6 @@ export class GetAllCategoriesController implements IController {
 
       return ok({ ...categories })
     } catch (error) {
-      console.error(error)
-
       if (error instanceof NotFoundException) {
         return notFoundError({ errorMessage: error.message })
       }

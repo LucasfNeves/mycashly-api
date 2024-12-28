@@ -13,10 +13,11 @@ export class GetUserBalanceController implements IController {
   constructor(private readonly getUserBalanceUseCase: GetUserBalanceUseCase) {}
 
   async handle({ userId }: IRequest): Promise<IResponse> {
-    if (!userId) {
-      return userNotFound({ errorMessage: 'User not found' })
-    }
     try {
+      if (!userId) {
+        return userNotFound({ errorMessage: 'User not found' })
+      }
+
       const idIsValid = checkIfIdIsValid(userId)
 
       if (!idIsValid) {
@@ -27,16 +28,12 @@ export class GetUserBalanceController implements IController {
 
       return ok(balance)
     } catch (error) {
-      if (error instanceof Error && 'code' in error && error.code === 'P2025') {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof UserNotFoundError ||
+        (error instanceof Error && 'code' in error && error.code === 'P2025')
+      ) {
         return userNotFound({ errorMessage: 'User not found' })
-      }
-
-      if (error instanceof NotFoundException) {
-        return userNotFound({ errorMessage: error.message })
-      }
-
-      if (error instanceof UserNotFoundError) {
-        return userNotFound({ errorMessage: error.message })
       }
 
       return serverError()

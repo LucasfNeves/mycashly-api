@@ -33,7 +33,7 @@ export class DeleteTransactionController implements IController {
         })
       }
 
-      return ok({ ...deleteTransaction })
+      return ok(deleteTransaction)
     } catch (error) {
       if (error instanceof Error && 'code' in error && error.code === 'P2025') {
         return notFoundError({ errorMessage: 'Transaction not found' })

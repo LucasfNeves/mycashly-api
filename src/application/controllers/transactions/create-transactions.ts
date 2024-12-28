@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { ZodError } from 'zod'
 import { NotFoundException } from '../../../errors/not-found-exception'
 import { UserNotFoundError } from '../../../errors/user-not-found-error'
 import { createtransactionSchema } from '../../../schemas/transactions'
@@ -47,7 +47,7 @@ export class CreateTransactionsController implements IController {
 
       return created({ ...transaction })
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      if (error instanceof ZodError) {
         const errorMessage = error.errors[0].message
         return badRequest({ errorMessage })
       }

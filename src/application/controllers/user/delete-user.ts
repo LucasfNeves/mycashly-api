@@ -30,13 +30,10 @@ export class DeleteUserController implements IController {
 
       return ok({ ...deleteUser })
     } catch (error) {
-      console.error(error)
-
-      if (error instanceof Error && 'code' in error && error.code === 'P2025') {
-        return userNotFoundResponse()
-      }
-
-      if (error instanceof UserNotFoundError) {
+      if (
+        error instanceof UserNotFoundError ||
+        (error instanceof Error && 'code' in error && error.code === 'P2025')
+      ) {
         return userNotFoundResponse()
       }
 

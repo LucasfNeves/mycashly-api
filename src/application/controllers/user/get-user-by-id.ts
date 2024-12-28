@@ -1,7 +1,7 @@
 import { UserNotFoundError } from '../../../errors/user-not-found-error'
 import { IController, IRequest, IResponse } from '../../interfaces/IController'
 import { GetUserByIdUseCase } from '../../use-cases/user/get-user-by-id'
-import { ok, serverError } from '../helpers/http'
+import { ok, serverError, userNotFound } from '../helpers/http'
 import { userNotFoundResponse } from '../helpers/user'
 import {
   checkIfIdIsValid,
@@ -13,7 +13,7 @@ export class GetUserByIdController implements IController {
   async handle({ userId }: IRequest): Promise<IResponse> {
     try {
       if (!userId) {
-        throw new UserNotFoundError()
+        return userNotFound({ errorMessage: 'User id is required' })
       }
 
       const idIsValid = checkIfIdIsValid(userId)

@@ -8,15 +8,13 @@ import {
 } from '../helpers/validation'
 import { EmailAlreadyInUseError } from '../../../errors/email-already-in-use'
 import { ZodError } from 'zod'
-import { UserNotFoundError } from '../../../errors/user-not-found-error'
-
 export class UpdateUserController implements IController {
   constructor(private readonly updateUserUseCase: UpdateUserUseCase) {}
 
   async handle({ body, userId }: IRequest): Promise<IResponse> {
     try {
       if (!userId) {
-        throw new UserNotFoundError()
+        return userNotFound({ errorMessage: 'User id is required' })
       }
 
       const isIdValid = checkIfIdIsValid(userId)

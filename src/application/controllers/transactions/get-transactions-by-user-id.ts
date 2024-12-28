@@ -16,22 +16,20 @@ export class GetTransactionsByUserIdController implements IController {
 
   async handle({ userId, query }: IRequest): Promise<IResponse> {
     try {
-      const { month, year, type } = query ?? {}
-
       if (!userId) {
         return badRequest({ message: 'User id is required' })
       }
 
-      const idIsValid = checkIfIdIsValid(userId)
+      const isIdValid = checkIfIdIsValid(userId)
 
-      if (!idIsValid) {
+      if (!isIdValid) {
         return generateInvalidIdResponse()
       }
 
       const filters = validateTransactionsQueryParams.parse({
-        month: Number(month),
-        year: Number(year),
-        type,
+        month: query?.month ? Number(query.month) : undefined,
+        year: query?.year ? Number(query.year) : undefined,
+        type: query?.type,
       })
 
       const transactions = await this.getTransactionsByUserIdUseCase.execute(

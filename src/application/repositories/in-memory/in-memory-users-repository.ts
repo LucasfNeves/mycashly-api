@@ -66,4 +66,29 @@ export class inMemoryUsersRepository implements UsersRepository {
 
     return user
   }
+
+  async getUserBalance(userId: string): Promise<{
+    expenses: number | Prisma.Decimal
+    incomes: number | Prisma.Decimal
+    investments: number | Prisma.Decimal
+    balance: number | Prisma.Decimal
+  }> {
+    const uu = userId
+
+    if (uu) {
+      return {
+        expenses: 0,
+        incomes: 0,
+        investments: 0,
+        balance: 0,
+      }
+    }
+
+    return {
+      expenses: 0,
+      incomes: 0,
+      investments: 0,
+      balance: 0,
+    }
+  }
 }

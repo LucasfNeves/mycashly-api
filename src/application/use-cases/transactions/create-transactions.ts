@@ -46,13 +46,13 @@ export class CreateTransactionUseCase {
     const transaction = await this.transactionRepository.create({
       id: transactionId,
       category: { connect: { id: categoryId } },
+      User: { connect: { id: userId } },
       date,
       name,
       type,
       value,
-      User: { connect: { id: userId } },
     })
 
-    return { transaction }
+    return { ...transaction }
   }
 }

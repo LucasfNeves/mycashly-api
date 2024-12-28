@@ -4,6 +4,7 @@ import {
   AuthenticateUserController,
   CreateUserController,
   DeleteUserController,
+  GetUserBalanceController,
   GetUserByIdController,
   UpdateUserController,
 } from '../application/controllers/user/index'
@@ -13,6 +14,7 @@ import {
   UpdateUserUseCase,
   GetUserByIdUseCase,
   DeleteUserUseCase,
+  GetUserBalanceUseCase,
 } from '../application/use-cases/user/index'
 
 export const makeCreateUserController = () => {
@@ -65,4 +67,16 @@ export const makeDeleteUserController = () => {
   const deleteUserController = new DeleteUserController(deleteUserUseCase)
 
   return deleteUserController
+}
+
+export const makeGetUserBalanceController = () => {
+  const usersRepository = new PrismaUsersRepository()
+
+  const getUserBalanceUseCase = new GetUserBalanceUseCase(usersRepository)
+
+  const getUserBalanceController = new GetUserBalanceController(
+    getUserBalanceUseCase,
+  )
+
+  return getUserBalanceController
 }

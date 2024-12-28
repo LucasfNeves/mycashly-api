@@ -2,6 +2,7 @@ import {
   makeAuthenticateController,
   makeCreateUserController,
   makeDeleteUserController,
+  makeGetUserBalanceController,
   makeGetUserByIdController,
   makeUpdateUserController,
 } from '../../factories/user'
@@ -45,6 +46,12 @@ router.delete(
   '/users',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteUserController()),
+)
+
+router.get(
+  '/users/balance',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetUserBalanceController()),
 )
 
 /** Categories */

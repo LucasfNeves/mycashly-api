@@ -16,11 +16,21 @@ import {
   DeleteUserUseCase,
   GetUserBalanceUseCase,
 } from '../application/use-cases/user/index'
+import { RefreshTokenController } from '../application/controllers/user/refresh-token-controller'
+import { PrismaRefreshTokenRepository } from '../application/repositories/postgres/prisma-refresh-token-repository'
+import { JwtAdapterImpl } from '../adapters/jwt-adapter'
+import { RefreshTokenUseCase } from '../application/use-cases/user/refresh-token-use-case'
 
 export const makeCreateUserController = () => {
   const usersRepository = new PrismaUsersRepository()
+  const refreshTokenRepository = new PrismaRefreshTokenRepository()
+  const jwtAdapter = new JwtAdapterImpl()
 
-  const registerUserUseCase = new RegisterUseCase(usersRepository)
+  const registerUserUseCase = new RegisterUseCase(
+    usersRepository,
+    refreshTokenRepository,
+    jwtAdapter,
+  )
 
   const createUserController = new CreateUserController(registerUserUseCase)
 
@@ -29,8 +39,14 @@ export const makeCreateUserController = () => {
 
 export const makeAuthenticateController = () => {
   const usersRepository = new PrismaUsersRepository()
+  const refreshTokenRepository = new PrismaRefreshTokenRepository()
+  const jwtAdapter = new JwtAdapterImpl()
 
-  const authenticateUseCase = new AuthenticateUseCase(usersRepository)
+  const authenticateUseCase = new AuthenticateUseCase(
+    usersRepository,
+    refreshTokenRepository,
+    jwtAdapter,
+  )
 
   const authenticateController = new AuthenticateUserController(
     authenticateUseCase,
@@ -79,4 +95,18 @@ export const makeGetUserBalanceController = () => {
   )
 
   return getUserBalanceController
+}
+
+export const makeRefreshTokenController = () => {
+  const refreshTokenRepository = new PrismaRefreshTokenRepository()
+  const jwtAdapter = new JwtAdapterImpl()
+
+  const refreshTokenUseCase = new RefreshTokenUseCase(
+    refreshTokenRepository,
+    jwtAdapter,
+  )
+
+  const refreshTokenController = new RefreshTokenController(refreshTokenUseCase)
+
+  return refreshTokenController
 }

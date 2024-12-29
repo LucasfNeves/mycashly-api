@@ -51,3 +51,17 @@ export const authenticateUserSchema = z.object({
 export const updateUserSchema = createUserSchema.partial().strict({
   message: 'Some provided field is not allowed',
 })
+
+export const refreshTokenSchema = z.object({
+  refreshToken: z
+    .string({
+      required_error: 'Refresh token is required',
+    })
+    .trim()
+    .uuid({
+      message: 'Refresh token must be a valid UUID',
+    })
+    .min(1, {
+      message: 'Refresh token is required',
+    }),
+})

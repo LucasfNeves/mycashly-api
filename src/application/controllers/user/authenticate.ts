@@ -17,12 +17,13 @@ export class AuthenticateUserController implements IController {
 
       const { email, password } = params
 
-      const acessToken = await this.authenticateUseCase.execute({
-        email,
-        password,
-      })
+      const { accessToken, refreshTokenId } =
+        await this.authenticateUseCase.execute({
+          email,
+          password,
+        })
 
-      return ok({ ...acessToken })
+      return ok({ accessToken, refreshTokenId })
     } catch (error) {
       if (error instanceof InvalidCredentialsError) {
         return unauthorized({

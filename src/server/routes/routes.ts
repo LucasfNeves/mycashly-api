@@ -4,6 +4,7 @@ import {
   makeDeleteUserController,
   makeGetUserBalanceController,
   makeGetUserByIdController,
+  makeRefreshTokenController,
   makeUpdateUserController,
 } from '../../factories/user'
 import { routeAdapter } from '../../adapters/route-adapter'
@@ -25,6 +26,8 @@ export const router = Router()
 router.post('/auth/signup', routeAdapter(makeCreateUserController()))
 
 router.post('/auth/signin', routeAdapter(makeAuthenticateController()))
+
+router.post('/auth/refresh-token', routeAdapter(makeRefreshTokenController()))
 
 /** Authenticated */
 

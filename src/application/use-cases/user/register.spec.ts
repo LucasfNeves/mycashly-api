@@ -4,28 +4,42 @@ import { RegisterUseCase } from './register'
 import { compare } from 'bcryptjs'
 import { faker } from '@faker-js/faker'
 import { UserAlreadyExists } from '../../../errors/user-already-exists'
+import { InMemoryRefreshTokenRepository } from '../../repositories/in-memory/in-memory-refresh-token-repository'
+import { JwtAdapterImpl } from '../../../adapters/jwt-adapter'
 
 describe('Register Use Case', () => {
   it('should create a new user', async () => {
     // arrange (Prepara o teste para ser executado)
     const usersRepository = new inMemoryUsersRepository()
-    const registerUseCase = new RegisterUseCase(usersRepository)
+    const refreshTokenRepository = new InMemoryRefreshTokenRepository()
+    const jwtAdapter = new JwtAdapterImpl()
+    const registerUseCase = new RegisterUseCase(
+      usersRepository,
+      refreshTokenRepository,
+      jwtAdapter,
+    )
 
     // act (Chama o controller a ser testado)
-    const { acessToken } = await registerUseCase.execute({
+    const { accessToken } = await registerUseCase.execute({
       name: faker.person.fullName(),
       email: faker.internet.email(),
       password: '123456',
     })
 
     // assert (Fazer a sua expectativa de resultado)
-    expect(acessToken).toBeTruthy()
+    expect(accessToken).toBeTruthy()
   })
 
   it('should hash user password upon registration', async () => {
     // arrange (Prepara o teste para ser executado)
     const usersRepository = new inMemoryUsersRepository()
-    const registerUseCase = new RegisterUseCase(usersRepository)
+    const refreshTokenRepository = new InMemoryRefreshTokenRepository()
+    const jwtAdapter = new JwtAdapterImpl()
+    const registerUseCase = new RegisterUseCase(
+      usersRepository,
+      refreshTokenRepository,
+      jwtAdapter,
+    )
 
     const userData = {
       name: faker.person.fullName(),
@@ -61,7 +75,13 @@ describe('Register Use Case', () => {
   it('should not allow two users with the same email', async () => {
     // arrange (Prepara o teste para ser executado)
     const usersRepository = new inMemoryUsersRepository()
-    const registerUseCase = new RegisterUseCase(usersRepository)
+    const refreshTokenRepository = new InMemoryRefreshTokenRepository()
+    const jwtAdapter = new JwtAdapterImpl()
+    const registerUseCase = new RegisterUseCase(
+      usersRepository,
+      refreshTokenRepository,
+      jwtAdapter,
+    )
 
     const email = faker.internet.email()
 

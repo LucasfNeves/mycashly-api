@@ -5,6 +5,8 @@ import { faker } from '@faker-js/faker'
 import { UpdateUserUseCase } from './update-user'
 import { compare } from 'bcryptjs'
 import { EmailAlreadyInUseError } from '../../../errors/email-already-in-use'
+import { InMemoryRefreshTokenRepository } from '../../repositories/in-memory/in-memory-refresh-token-repository'
+import { JwtAdapterImpl } from '../../../adapters/jwt-adapter'
 
 describe('Update User Use Case', () => {
   let usersRepository: inMemoryUsersRepository
@@ -12,7 +14,13 @@ describe('Update User Use Case', () => {
   let sut: UpdateUserUseCase
   beforeEach(() => {
     usersRepository = new inMemoryUsersRepository()
-    registerUseCase = new RegisterUseCase(usersRepository)
+    const refreshTokenRepository = new InMemoryRefreshTokenRepository()
+    const jwtAdapter = new JwtAdapterImpl()
+    registerUseCase = new RegisterUseCase(
+      usersRepository,
+      refreshTokenRepository,
+      jwtAdapter,
+    )
     sut = new UpdateUserUseCase(usersRepository)
   })
 

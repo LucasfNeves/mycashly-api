@@ -9,6 +9,8 @@ import {
 } from '../../repositories/in-memory/index'
 import { UserNotFoundError, NotFoundException } from '../../../errors/index'
 import { createtransactionSchema } from '../../../schemas/transactions'
+import { InMemoryRefreshTokenRepository } from '../../repositories/in-memory/in-memory-refresh-token-repository'
+import { JwtAdapterImpl } from '../../../adapters/jwt-adapter'
 
 describe('Create Transaction Use Case', () => {
   class IdGeneratorAdapterStub {
@@ -37,7 +39,13 @@ describe('Create Transaction Use Case', () => {
     categoryRepository = new inMemoryCategoriesRepository()
     transactionRepository = new inMemoryTransactionsRepository()
     generateIdAdapter = new IdGeneratorAdapterStub()
-    registerUseCase = new RegisterUseCase(usersRepository)
+    const refreshTokenRepository = new InMemoryRefreshTokenRepository()
+    const jwtAdapter = new JwtAdapterImpl()
+    registerUseCase = new RegisterUseCase(
+      usersRepository,
+      refreshTokenRepository,
+      jwtAdapter,
+    )
     sut = new CreateTransactionUseCase(
       transactionRepository,
       usersRepository,

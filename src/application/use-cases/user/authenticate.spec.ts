@@ -4,13 +4,21 @@ import { faker } from '@faker-js/faker'
 import { AuthenticateUseCase } from './authenticate'
 import { hash } from 'bcryptjs'
 import { InvalidCredentialsError } from '../../../errors/Invalid-credentials-error'
+import { JwtAdapterImpl } from '../../../adapters/jwt-adapter'
+import { InMemoryRefreshTokenRepository } from '../../repositories/in-memory/in-memory-refresh-token-repository'
 
 describe('Authenticate User Use Case', () => {
   let usersRepository: inMemoryUsersRepository
   let sut: AuthenticateUseCase
   beforeEach(() => {
     usersRepository = new inMemoryUsersRepository()
-    sut = new AuthenticateUseCase(usersRepository)
+    const refreshTokenRepository = new InMemoryRefreshTokenRepository()
+    const jwtAdapter = new JwtAdapterImpl()
+    sut = new AuthenticateUseCase(
+      usersRepository,
+      refreshTokenRepository,
+      jwtAdapter,
+    )
   })
 
   it('should be able to authenticate', async () => {
@@ -24,13 +32,13 @@ describe('Authenticate User Use Case', () => {
     })
 
     // act (Chama o controller a ser testado)
-    const { acessToken } = await sut.execute({
+    const { accessToken } = await sut.execute({
       email,
       password: '123456',
     })
 
     // assert (Fazer a sua expectativa de resultado)
-    expect(acessToken).toBeTruthy()
+    expect(accessToken).toBeTruthy()
   })
 
   it('should not be able to autheticate with wrong email', async () => {

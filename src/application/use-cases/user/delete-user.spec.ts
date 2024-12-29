@@ -3,6 +3,8 @@ import { expect, describe, it, beforeEach, vi } from 'vitest'
 import { RegisterUseCase } from './register'
 import { faker } from '@faker-js/faker'
 import { DeleteUserUseCase } from './delete-user'
+import { JwtAdapterImpl } from '../../../adapters/jwt-adapter'
+import { InMemoryRefreshTokenRepository } from '../../repositories/in-memory/in-memory-refresh-token-repository'
 
 describe('Register Use Case', () => {
   let usersRepository: inMemoryUsersRepository
@@ -10,7 +12,13 @@ describe('Register Use Case', () => {
   let sut: DeleteUserUseCase
   beforeEach(() => {
     usersRepository = new inMemoryUsersRepository()
-    createUserUseCase = new RegisterUseCase(usersRepository)
+    const refreshTokenRepository = new InMemoryRefreshTokenRepository()
+    const jwtAdapter = new JwtAdapterImpl()
+    createUserUseCase = new RegisterUseCase(
+      usersRepository,
+      refreshTokenRepository,
+      jwtAdapter,
+    )
     sut = new DeleteUserUseCase(usersRepository)
   })
 

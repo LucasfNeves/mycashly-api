@@ -13,6 +13,8 @@ import {
 
 import { NotFoundException } from '../../../errors/index'
 import { TransactionType } from '@prisma/client'
+import { InMemoryRefreshTokenRepository } from '../../repositories/in-memory/in-memory-refresh-token-repository'
+import { JwtAdapterImpl } from '../../../adapters/jwt-adapter'
 
 describe('Create Transaction Use Case', () => {
   const createTransactionParams = {
@@ -50,7 +52,13 @@ describe('Create Transaction Use Case', () => {
       generateIdAdapter,
       categoryRepository,
     )
-    registerUseCase = new RegisterUseCase(usersRepository)
+    const refreshTokenRepository = new InMemoryRefreshTokenRepository()
+    const jwtAdapter = new JwtAdapterImpl()
+    registerUseCase = new RegisterUseCase(
+      usersRepository,
+      refreshTokenRepository,
+      jwtAdapter,
+    )
     sut = new UpdateTransactionUseCase(
       transactionRepository,
       categoryRepository,

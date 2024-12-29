@@ -11,7 +11,7 @@ interface RegisterUserUseCaseParams {
     email: string
     name: string
     password: string
-  }) => Promise<{ acessToken: string }>
+  }) => Promise<{ accessToken: string; refreshTokenId: string }>
 }
 
 export class CreateUserController implements IController {
@@ -23,13 +23,14 @@ export class CreateUserController implements IController {
     try {
       const { email, name, password } = await createUserSchema.parseAsync(body)
 
-      const { acessToken } = await this.registerUserUseCase.execute({
-        email,
-        name,
-        password,
-      })
+      const { accessToken, refreshTokenId } =
+        await this.registerUserUseCase.execute({
+          email,
+          name,
+          password,
+        })
 
-      return created({ acessToken })
+      return created({ accessToken, refreshTokenId })
     } catch (error) {
       if (error instanceof UserAlreadyExists) {
         return badRequest({

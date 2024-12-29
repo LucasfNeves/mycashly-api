@@ -1,6 +1,9 @@
 import { defineConfig } from 'vitest/config'
 import { loadEnv } from 'vite'
 import { configDefaults } from 'vitest/config'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export default defineConfig(({ mode }) => {
   // Carrega todas as variáveis do .env (sem necessidade de prefixo VITE_)

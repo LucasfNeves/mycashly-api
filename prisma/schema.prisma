@@ -22,6 +22,7 @@ model User {
 
   categories   Category[]
   transactions Transactions[]
+  RefreshToken RefreshToken[]
 
   //Nome da tabela no banco de dados SQL - letra minúsculas, snake_case. Podemos usar o @@map("name_sql") para mudar no banco
   @@map("users")
@@ -61,4 +62,15 @@ model Transactions {
   category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@map("transactions")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  issuedAt  DateTime @map("issued_at") @default(now())
+  expiresAt DateTime @map("expires_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
 }

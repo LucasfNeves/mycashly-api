@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "refresh_tokens" ADD COLUMN     "issued_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

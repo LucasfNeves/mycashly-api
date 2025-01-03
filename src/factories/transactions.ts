@@ -66,10 +66,12 @@ export const makeDeleteTransactionsController = () => {
 }
 
 export const makeGetTransactionsByUserIdController = () => {
+  const usersRepository = new PrismaUsersRepository()
   const transactionsRepository = new PrismaTransactionsRepository()
 
   const getTransactionsByUserIdUseCase = new GetTransactionsByUserIdUseCase(
     transactionsRepository,
+    usersRepository,
   )
 
   const getTransactionsByUserIdController =

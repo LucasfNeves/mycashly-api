@@ -7,7 +7,7 @@ import {
   checkIfIdIsValid,
   generateInvalidIdResponse,
 } from '../helpers/validation'
-import { NotFoundException, UserNotFoundError } from '../../../errors'
+import { UserNotFoundError } from '../../../errors'
 
 export class GetUserBalanceController implements IController {
   constructor(private readonly getUserBalanceUseCase: GetUserBalanceUseCase) {}
@@ -29,7 +29,6 @@ export class GetUserBalanceController implements IController {
       return ok(balance)
     } catch (error) {
       if (
-        error instanceof NotFoundException ||
         error instanceof UserNotFoundError ||
         (error instanceof Error && 'code' in error && error.code === 'P2025')
       ) {

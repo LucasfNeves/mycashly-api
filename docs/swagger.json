@@ -4,5 +4,97 @@
     "title": "MyCashly API",
     "description": "API for MyCashly Finance App that allows users to manage their finances",
     "version": "1.0.0"
+  },
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Create a new user",
+        "description": "Create a new user with the input payload",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be added to the database",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateUserParams"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "schema": {
+              "$ref": "#/definitions/Tokens"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500" : {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "CreateUserParams": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Lucas Farias"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "12345678"
+        }
+      }
+    },
+
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "example": "Lucas Farias"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "12345678"
+        }
+      }
+    },
+    "Tokens": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYzBlZTI3Ny03YjhmLTRiOWItYjlkNy01NjljYzE1ZjQ3NGUiLCJpYXQiOjE3MzYyNjk0NjcsImV4cCI6MTczNjI3MzA2N30.XZrtwLlCtJAOpthXMSnj0HM421YDdz7ihdeid1YrUo0"
+        },
+        "refreshTokenId": {
+          "type": "string",
+          "example": "165e3b0c-f74f-49cd-b63e-c24016657b71"
+        }
+      }
+    }
   }
 }

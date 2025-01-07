@@ -5,6 +5,16 @@
     "description": "API for MyCashly Finance App that allows users to manage their finances",
     "version": "1.0.0"
   },
+
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Use 'Bearer' seguido de um espaço e o seu token. Para obter o accessToken, registre-se ou faça login. Se o token expirar, use a rota de refresh para gerar um novo token. / Use 'Bearer' followed by a space and your token. To obtain the accessToken, register or log in. If the token expires, use the refresh route to generate a new token."
+    }
+  },
+
   "paths": {
     "/auth/signup": {
       "post": {
@@ -32,7 +42,148 @@
           "400": {
             "description": "Invalid input"
           },
-          "500" : {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Sign in a user",
+        "description": "Sign in a user with the input payload",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be signed in",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SignInParams"
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "User signed in successfully",
+            "schema": {
+              "$ref": "#/definitions/Tokens"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/auth/refresh-token": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh access token",
+        "description": "Refresh access token with the input payload",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Refresh token object that needs to be refreshed",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RefreshTokenParams"
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Access token refreshed successfully",
+            "schema": {
+              "$ref": "#/definitions/Tokens"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/users/me": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user by ID",
+        "description": "Get user profile",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/GetUserResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/users": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user by ID",
+        "description": "Update user profile",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateUserParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile updated successfully",
+            "schema": {
+              "$ref": "#/definitions/UpdateUserResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
             "description": "Internal Server Error"
           }
         }
@@ -83,6 +234,7 @@
         }
       }
     },
+
     "Tokens": {
       "type": "object",
       "properties": {
@@ -93,6 +245,99 @@
         "refreshTokenId": {
           "type": "string",
           "example": "165e3b0c-f74f-49cd-b63e-c24016657b71"
+        }
+      }
+    },
+
+    "SignInParams": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "example@gmail.com",
+          "required": true
+        },
+
+        "password": {
+          "type": "string",
+          "example": "12345678",
+          "required": true
+        }
+      }
+    },
+
+    "RefreshTokenParams": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "example": "165e3b0c-f74f-49cd-b63e-c24016657b71",
+          "required": true
+        }
+      }
+    },
+
+    "GetUserResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "example": "Lucas Farias"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "example@gmail.com"
+        }
+      }
+    },
+
+    "UpdateUserParams": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Lucas Farias"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "example@gmail.com"
+        },
+
+        "password": {
+          "type": "string",
+          "example": "12345678"
+        }
+      }
+    },
+
+    "UpdateUserResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "example": "Lucas Farias"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "$2a$12$g0NdYovncbaqKCAZ7Yqfsum0wMPlaFWYJ5m/HGWJWOJijDCrA3OMy"
         }
       }
     }

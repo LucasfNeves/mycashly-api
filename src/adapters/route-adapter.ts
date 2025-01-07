@@ -17,10 +17,15 @@ export function routeAdapter(controller: IController) {
         userId: request.metadata?.userId,
       })
 
-      response.status(statusCode).send(body)
+      if (!response.headersSent) {
+        response.status(statusCode).send(body)
+      }
     } catch (error) {
-      console.error('Error in routeAdapter:', error)
-      response.status(500).send({ error: 'Internal server error' })
+      if (!response.headersSent) {
+        response.status(500).send({ error: 'Internal server error' })
+      }
+
+      console.error(error)
     }
   }
 }

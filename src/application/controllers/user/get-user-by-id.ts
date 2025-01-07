@@ -22,13 +22,13 @@ export class GetUserByIdController implements IController {
         return generateInvalidIdResponse()
       }
 
-      const user = await this.getUserByIdUseCase.execute(userId)
+      const { user } = await this.getUserByIdUseCase.execute(userId)
 
       if (!user) {
         return userNotFoundResponse()
       }
 
-      return ok({ ...user })
+      return ok(user)
     } catch (error) {
       if (error instanceof UserNotFoundError) {
         return userNotFoundResponse()

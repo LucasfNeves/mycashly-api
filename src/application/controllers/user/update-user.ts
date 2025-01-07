@@ -25,12 +25,12 @@ export class UpdateUserController implements IController {
 
       const updatedUserParams = await updateUserSchema.parseAsync(body)
 
-      const updateUser = await this.updateUserUseCase.execute(
+      const { updateUser } = await this.updateUserUseCase.execute(
         userId,
         updatedUserParams,
       )
 
-      return ok({ ...updateUser })
+      return ok(updateUser!)
     } catch (error) {
       if (error instanceof Error && 'code' in error && error.code === 'P2025') {
         return userNotFound({ errorMessage: 'User not found' })

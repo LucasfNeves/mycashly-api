@@ -10,7 +10,7 @@
     "test:watch": "vitest",
     "build": "tsup src --out-dir build",
     "lint": "eslint . --ext .ts",
-    "prepare": "husky install",
+    "prepare": "husky install && prisma generate",
     "test:covarege": "vitest run --coverage"
   },
   "keywords": [],

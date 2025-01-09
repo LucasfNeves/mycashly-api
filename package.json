@@ -11,7 +11,9 @@
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "prepare": "husky install && prisma generate",
-    "test:covarege": "vitest run --coverage"
+    "test:covarege": "vitest run --coverage",
+    "eslint:check": "npx eslint --fix \"src/**/*.{ts,js}\"",
+    "prettier:check": "npx prettier --check \"src/**/*.{ts,js}\""
   },
   "keywords": [],
   "author": "",

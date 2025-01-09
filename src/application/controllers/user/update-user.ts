@@ -1,4 +1,10 @@
-import { badRequest, ok, serverError, userNotFound } from '../helpers/http'
+import {
+  badRequest,
+  conflict,
+  ok,
+  serverError,
+  userNotFound,
+} from '../helpers/http'
 import { updateUserSchema } from '../../../schemas/user'
 import { IController, IRequest, IResponse } from '../../interfaces/IController'
 import { UpdateUserUseCase } from '../../use-cases/user/update-user'
@@ -43,7 +49,7 @@ export class UpdateUserController implements IController {
       }
 
       if (error instanceof EmailAlreadyInUseError) {
-        return badRequest({
+        return conflict({
           message: error.message,
         })
       }

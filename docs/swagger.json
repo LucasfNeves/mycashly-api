@@ -39,11 +39,25 @@
               "$ref": "#/definitions/Tokens"
             }
           },
-          "400": {
-            "description": "Invalid input"
+          "409": {
+            "description": "User already exists",
+            "schema": {
+              "$ref": "#/definitions/UserAlreadyExistsResponse"
+            }
           },
+
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/InvalidInputResponse"
+            }
+          },
+
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       }
@@ -73,13 +87,22 @@
             }
           },
           "400": {
-            "description": "Invalid input"
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/InvalidInputResponse"
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       }
@@ -110,13 +133,22 @@
             }
           },
           "400": {
-            "description": "Invalid input"
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/InvalidInputResponse"
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       }
@@ -140,10 +172,23 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/UserNotFoundResponse"
+            }
+          },
+
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       }
@@ -174,17 +219,40 @@
           "200": {
             "description": "User profile updated successfully",
             "schema": {
-              "$ref": "#/definitions/getUserResponse"
+              "$ref": "#/definitions/UpdateUserResponse"
             }
           },
           "400": {
-            "description": "Invalid input"
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/InvalidInputResponse"
+            }
           },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/UserNotFoundResponse"
+            }
+          },
+
+          "409": {
+            "description": "User already exists",
+            "schema": {
+              "$ref": "#/definitions/UserAlreadyExistsResponse"
+            }
+          },
+
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       },
@@ -205,11 +273,24 @@
               "$ref": "#/definitions/GetUserResponse"
             }
           },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/UserNotFoundResponse"
+            }
+          },
+
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       }
@@ -233,13 +314,23 @@
             }
           },
           "404": {
-            "description": "User not found"
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/UserNotFoundResponse"
+            }
           },
+
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       }
@@ -262,11 +353,30 @@
               "$ref": "#/definitions/Categories"
             }
           },
+          "404": {
+            "description": "User not found or category not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "[User not found] or [Category not found]"
+                }
+              }
+            }
+          },
+
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       }
@@ -301,13 +411,35 @@
             }
           },
           "400": {
-            "description": "Invalid input"
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/InvalidInputResponse"
+            }
           },
+          "404": {
+            "description": "User not found or transaction not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "[User not found] or [Transaction not found]"
+                }
+              }
+            }
+          },
+
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       },
@@ -364,11 +496,36 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/InvalidInputResponse"
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Transaction not found"
+                }
+              }
+            }
+          },
+
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       }
@@ -411,13 +568,35 @@
             }
           },
           "400": {
-            "description": "Invalid input"
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/InvalidInputResponse"
+            }
           },
+          "404": {
+            "description": "User not found or transaction not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "[User not found] or [Transaction not found]"
+                }
+              }
+            }
+          },
+
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       },
@@ -448,11 +627,30 @@
               "$ref": "#/definitions/Transaction"
             }
           },
+          "404": {
+            "description": "User not found or transaction not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "[User not found] or [Transaction not found]"
+                }
+              }
+            }
+          },
+
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
           }
         }
       }
@@ -746,6 +944,56 @@
         "type": {
           "type": "string",
           "example": "EXPENSE"
+        }
+      }
+    },
+
+    "InternalServerErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Internal Server Error"
+        }
+      }
+    },
+
+    "UserNotFoundResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User not found"
+        }
+      }
+    },
+
+    "InvalidCredentialsError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Unauthorized"
+        }
+      }
+    },
+
+    "InvalidInputResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Invalid input"
+        }
+      }
+    },
+
+    "UserAlreadyExistsResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User already exists"
         }
       }
     }

@@ -1,7 +1,7 @@
 import { UserAlreadyExists } from '../../../errors/user-already-exists'
 import { env } from 'process'
 import { z } from 'zod'
-import { badRequest, created, serverError } from '../helpers/http'
+import { badRequest, conflict, created, serverError } from '../helpers/http'
 
 import { createUserSchema } from '../../../schemas/user'
 import { IController, IRequest, IResponse } from '../../interfaces/IController'
@@ -33,7 +33,7 @@ export class CreateUserController implements IController {
       return created({ accessToken, refreshTokenId })
     } catch (error) {
       if (error instanceof UserAlreadyExists) {
-        return badRequest({
+        return conflict({
           message: error.message,
         })
       }

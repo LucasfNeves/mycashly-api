@@ -16,6 +16,13 @@ export const badRequest = (body: ResponseBody): Response => {
   }
 }
 
+export const conflict = (body: ResponseBody): Response => {
+  return {
+    statusCode: 409,
+    body,
+  }
+}
+
 export const unauthorized = (body: ResponseBody): Response => {
   return {
     statusCode: 401,

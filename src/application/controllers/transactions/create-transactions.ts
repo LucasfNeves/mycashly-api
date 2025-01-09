@@ -36,7 +36,7 @@ export class CreateTransactionsController implements IController {
         return generateInvalidIdResponse()
       }
 
-      const transaction = await this.createTransactionUseCase.execute({
+      const { transaction } = await this.createTransactionUseCase.execute({
         categoryId,
         date,
         name,
@@ -45,7 +45,7 @@ export class CreateTransactionsController implements IController {
         userId,
       })
 
-      return created({ ...transaction })
+      return created(transaction)
     } catch (error) {
       if (error instanceof ZodError) {
         const errorMessage = error.errors[0].message

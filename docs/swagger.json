@@ -189,7 +189,7 @@
         }
       },
 
-      "delete" : {
+      "delete": {
         "tags": ["Users"],
         "summary": "Delete user by ID",
         "description": "Delete user profile",
@@ -204,6 +204,104 @@
             "schema": {
               "$ref": "#/definitions/GetUserResponse"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/users/balance": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user balance",
+        "description": "Get user balance",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User balance retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/UserBalance"
+            }
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/categories": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Get all categories",
+        "description": "Get all categories",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categories retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Categories"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/transactions": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Create a new transaction",
+        "description": "Create a new transaction with the input payload",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Transaction object that needs to be added to the database",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateTransactionParams"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Transaction created successfully",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
           },
           "401": {
             "description": "Unauthorized"
@@ -363,6 +461,119 @@
         "password": {
           "type": "string",
           "example": "$2a$12$g0NdYovncbaqKCAZ7Yqfsum0wMPlaFWYJ5m/HGWJWOJijDCrA3OMy"
+        }
+      }
+    },
+
+    "UserBalance": {
+      "type": "object",
+      "properties": {
+        "expenses": {
+          "type": "number",
+          "example": 500
+        },
+        "incomes": {
+          "type": "number",
+          "example": 1500
+        },
+        "investments": {
+          "type": "number",
+          "example": 1000
+        },
+        "balance": {
+          "type": "number",
+          "example": 2000
+        }
+      }
+    },
+
+    "Categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid"
+          },
+          "userId ": {
+            "type": "string",
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Food"
+          },
+          "type": {
+            "type": "string",
+            "example": "EXPENSE"
+          }
+        }
+      }
+    },
+
+    "CreateTransactionParams": {
+      "type": "object",
+      "properties": {
+        "categoryId": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "example": "Lunch"
+        },
+        "value": {
+          "type": "number",
+          "example": 500
+        },
+        "date": {
+          "type": "string",
+          "example": "2024-12-17T14:57:22.802Z"
+        },
+        "type": {
+          "type": "string",
+          "example": "EXPENSE"
+        }
+      }
+    },
+
+    "Transaction": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000",
+          "format": "uuid"
+        },
+        "userId ": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000",
+          "format": "uuid"
+        },
+        "categoryId": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "example": "Lunch"
+        },
+        "value": {
+          "type": "number",
+          "example": 500
+        },
+        "type": {
+          "type": "string",
+          "example": "EXPENSE"
+        },
+        "date": {
+          "type": "string",
+          "example": "2024-12-17T14:57:22.802Z"
         }
       }
     }

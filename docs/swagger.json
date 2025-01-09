@@ -11,7 +11,7 @@
       "type": "apiKey",
       "name": "Authorization",
       "in": "header",
-      "description": "Use 'Bearer' seguido de um espaço e o seu token. Para obter o accessToken, registre-se ou faça login. Se o token expirar, use a rota de refresh para gerar um novo token. / Use 'Bearer' followed by a space and your token. To obtain the accessToken, register or log in. If the token expires, use the refresh route to generate a new token."
+      "description": "Enter 'Bearer' [space] and then your token in the input below. Example: 'Bearer [your token]'"
     }
   },
 
@@ -174,11 +174,36 @@
           "200": {
             "description": "User profile updated successfully",
             "schema": {
-              "$ref": "#/definitions/UpdateUserResponse"
+              "$ref": "#/definitions/getUserResponse"
             }
           },
           "400": {
             "description": "Invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+
+      "delete" : {
+        "tags": ["Users"],
+        "summary": "Delete user by ID",
+        "description": "Delete user profile",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/GetUserResponse"
+            }
           },
           "401": {
             "description": "Unauthorized"

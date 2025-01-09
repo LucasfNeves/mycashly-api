@@ -22,13 +22,13 @@ export class DeleteUserController implements IController {
         return generateInvalidIdResponse()
       }
 
-      const deleteUser = await this.deleteUserUseCase.execute(userId)
+      const { user } = await this.deleteUserUseCase.execute(userId)
 
-      if (!deleteUser) {
+      if (!user) {
         return userNotFoundResponse()
       }
 
-      return ok({ ...deleteUser })
+      return ok(user)
     } catch (error) {
       if (
         error instanceof UserNotFoundError ||

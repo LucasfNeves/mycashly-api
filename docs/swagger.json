@@ -311,6 +311,55 @@
           }
         }
       }
+    },
+
+    "/transactions/{transactionId}": {
+      "patch": {
+        "tags": ["Transactions"],
+        "summary": "Update transaction by ID",
+        "description": "Update transaction with the input payload",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "ID of transaction to update",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Transaction object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateTransactionParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction updated successfully",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
 
@@ -574,6 +623,32 @@
         "date": {
           "type": "string",
           "example": "2024-12-17T14:57:22.802Z"
+        }
+      }
+    },
+    "UpdateTransactionParams": {
+      "type": "object",
+      "properties": {
+        "categoryId": {
+          "type": "string",
+          "example": "123e4567-e89b-12d3-a456-426614174000",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "example": "Lunch"
+        },
+        "value": {
+          "type": "number",
+          "example": 500
+        },
+        "date": {
+          "type": "string",
+          "example": "2024-12-17T14:57:22.802Z"
+        },
+        "type": {
+          "type": "string",
+          "example": "EXPENSE"
         }
       }
     }

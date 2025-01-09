@@ -55,4 +55,4 @@ jobs:
         run: npm install
 
       - name: Run migrations
-        run: npm run migrate
+        run: npx prisma migrate deploy

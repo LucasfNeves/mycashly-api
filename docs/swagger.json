@@ -310,6 +310,67 @@
             "description": "Internal Server Error"
           }
         }
+      },
+
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get all transactions by userId, filtered by month, year, and optionally type",
+        "description": "Retrieve transactions filtered by month, year, and optionally type.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "month",
+            "description": "The month to filter transactions.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 11
+            }
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "description": "The year to filter transactions.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 2024
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "The type of transactions to filter (optional). Values can be 'EXPENSE', 'RECEIVES', or 'INVESTMENT'.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["EXPENSE", "RECEIVES", "INVESTMENT"],
+              "example": "EXPENSE"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transactions retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
 
@@ -351,6 +412,41 @@
           },
           "400": {
             "description": "Invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Delete transaction by ID",
+        "description": "Delete transaction",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "ID of transaction to delete",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -626,6 +722,7 @@
         }
       }
     },
+
     "UpdateTransactionParams": {
       "type": "object",
       "properties": {

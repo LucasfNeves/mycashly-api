@@ -10,7 +10,7 @@
     "test:watch": "vitest",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
-    "prepare": "husky install && prisma generate",
+    "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi && prisma generate",
     "test:covarege": "vitest run --coverage",
     "eslint:check": "npx eslint --fix \"src/**/*.{ts,js}\"",
     "prettier:check": "npx prettier --check \"src/**/*.{ts,js}\""

@@ -5,10 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start:dev": "nodemon src/server/index.ts",
-    "start": "node build/src/server/index.js",
+    "start": "node dist/src/server/index.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build": "tsc && mkdir -p build/docs && cp docs/swagger.json build/docs",
+    "build": "tsup src",
     "lint": "eslint . --ext .ts",
     "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi && prisma generate",
     "test:covarege": "vitest run --coverage",

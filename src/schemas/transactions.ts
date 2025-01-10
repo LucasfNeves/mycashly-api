@@ -111,11 +111,8 @@ export const validateTransactionsQueryParams = z.object({
     .int({
       message: 'Month must be an integer',
     })
-    .min(1, {
-      message: 'Month must be greater than or equal to 1',
-    })
-    .max(12, {
-      message: 'Month must be less than or equal to 12',
+    .refine((val) => val >= 0 && val <= 11, {
+      message: 'Month must be between 0 (January) and 11 (December)',
     }),
 
   year: z

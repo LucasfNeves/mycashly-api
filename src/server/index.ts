@@ -13,9 +13,8 @@ app.use(express.json())
 
 app.use(router)
 
-const swaggerDocument = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '../../docs/swagger.json'), 'utf-8'),
-)
+const swaggerPath = path.resolve(__dirname, '../../docs/swagger.json')
+const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf-8'))
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 

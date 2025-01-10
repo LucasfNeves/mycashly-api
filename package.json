@@ -8,7 +8,7 @@
     "start": "node dist/src/server/index.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build": "tsup src",
+    "build": "npm install tsup && tsc src",
     "lint": "eslint . --ext .ts",
     "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi && prisma generate",
     "test:covarege": "vitest run --coverage",

@@ -36,7 +36,7 @@ export class UpdateUserController implements IController {
         updatedUserParams,
       )
 
-      return ok(updateUser!)
+      return ok({ ...updateUser })
     } catch (error) {
       if (error instanceof Error && 'code' in error && error.code === 'P2025') {
         return userNotFound({ errorMessage: 'User not found' })

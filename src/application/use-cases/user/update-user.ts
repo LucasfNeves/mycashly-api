@@ -1,4 +1,3 @@
-import { User } from '@prisma/client'
 import { UsersRepository } from '../../repositories/interfaces/users-repository'
 import { EmailAlreadyInUseError } from '../../../errors/email-already-in-use'
 import { hash } from 'bcryptjs'
@@ -10,7 +9,11 @@ interface UpdateUseCasesParams {
 }
 
 interface UpdateUseCaseResponse {
-  updateUser: User | null
+  updateUser: {
+    id: string
+    name: string
+    email: string
+  } | null
 }
 
 export class UpdateUserUseCase {

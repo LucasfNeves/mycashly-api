@@ -800,10 +800,6 @@
           "type": "string",
           "format": "email",
           "example": "example@gmail.com"
-        },
-        "password": {
-          "type": "string",
-          "example": "$2a$12$g0NdYovncbaqKCAZ7Yqfsum0wMPlaFWYJ5m/HGWJWOJijDCrA3OMy"
         }
       }
     },

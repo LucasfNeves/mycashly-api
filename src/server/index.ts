@@ -4,12 +4,20 @@ import { router } from './routes/routes'
 import swaggerUi from 'swagger-ui-express'
 import fs from 'fs'
 import path from 'path'
+import cors from 'cors'
+
+const corsOptions = {
+  origin: 'https://mycashly-api.onrender.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+}
 
 dotenv.config()
 
 const app = express()
 
 app.use(express.json())
+
+app.use(cors(corsOptions))
 
 app.use(router)
 

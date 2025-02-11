@@ -16,6 +16,6 @@ export class GetAllCategoriesUseCase {
       throw new NotFoundException('Categories not found')
     }
 
-    return { categories }
+    return categories
   }
 }

@@ -6,7 +6,7 @@ type ResponseBody = {
 
 type Response = {
   statusCode: number
-  body: ResponseBody
+  body: Record<string, unknown>
 }
 
 export const badRequest = (body: ResponseBody): Response => {
@@ -68,9 +68,9 @@ export const serverError = (): Response => {
   }
 }
 
-export const ok = <T extends ResponseBody>(body: T | T[]): Response => {
+export const ok = <T>(body: T | T[]): Response => {
   return {
     statusCode: 200,
-    body: Array.isArray(body) ? { data: body } : body,
+    body: body as Record<string, unknown>,
   }
 }

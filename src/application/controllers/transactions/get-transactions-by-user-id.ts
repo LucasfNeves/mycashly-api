@@ -37,7 +37,7 @@ export class GetTransactionsByUserIdController implements IController {
         filters,
       )
 
-      return ok({ ...transactions })
+      return ok({ transactions })
     } catch (error) {
       console.error(error)
 

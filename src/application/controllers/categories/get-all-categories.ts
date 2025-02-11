@@ -27,7 +27,7 @@ export class GetAllCategoriesController implements IController {
 
       const categories = await this.getAllCategoriesUseCase.execute(userId)
 
-      return ok({ ...categories })
+      return ok(categories)
     } catch (error) {
       if (error instanceof NotFoundException) {
         return notFoundError({ errorMessage: error.message })

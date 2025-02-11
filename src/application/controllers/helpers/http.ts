@@ -68,9 +68,9 @@ export const serverError = (): Response => {
   }
 }
 
-export const ok = (body: ResponseBody): Response => {
+export const ok = <T extends ResponseBody>(body: T | T[]): Response => {
   return {
     statusCode: 200,
-    body,
+    body: Array.isArray(body) ? { data: body } : body,
   }
 }

@@ -20,7 +20,7 @@ describe('Authenticate User Use Case', () => {
 
     // Assert
     expect(categories).toBeTruthy()
-    expect(categories.categories).toHaveLength(12)
+    expect(categories).toHaveLength(12)
   })
 
   it('should return throw UserNotFoundError if userId is not provided', async () => {

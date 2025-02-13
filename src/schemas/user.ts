@@ -65,3 +65,22 @@ export const refreshTokenSchema = z.object({
       message: 'Refresh token is required',
     }),
 })
+
+export const updatePasswordSchema = z.object({
+  currentPassword: z
+    .string({
+      required_error: 'Current password is required',
+    })
+    .trim()
+    .min(6, {
+      message: 'Password must be have at least 6 characteres',
+    }),
+  newPassword: z
+    .string({
+      required_error: 'New password is required',
+    })
+    .trim()
+    .min(6, {
+      message: 'Password must be have at least 6 characteres',
+    }),
+})

@@ -9,13 +9,19 @@ interface UpdatePasswordUseCaseParams {
   newPassword: string
 }
 
+interface UpdatePasswordUseCaseResponse {
+  updatePassword: {
+    password: string
+  } | null
+}
+
 export class UpdatePasswordUseCase {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async execute(
     userId: string,
     updatePasswordParams: UpdatePasswordUseCaseParams,
-  ) {
+  ): Promise<UpdatePasswordUseCaseResponse> {
     const { currentPassword, newPassword } = updatePasswordParams
 
     if (currentPassword === newPassword) {
@@ -24,16 +30,11 @@ export class UpdatePasswordUseCase {
       )
     }
 
-    const getUserById = await this.usersRepository.findById(userId)
-
-    if (!getUserById) {
-      return userNotFoundResponse()
-    }
-
-    const user = await this.usersRepository.findByEmail(getUserById.email)
+    const user =
+      await this.usersRepository.getUserWithPasswordByIdRepository(userId)
 
     if (!user) {
-      return userNotFoundResponse()
+      throw userNotFoundResponse()
     }
 
     const doesPasswordMatches = await compare(currentPassword, user.password)

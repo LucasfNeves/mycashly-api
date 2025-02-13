@@ -29,4 +29,13 @@ export interface UsersRepository {
     investments: number | Decimal
     balance: number | Decimal
   }>
+
+  updatePassword(
+    userId: string,
+    password: string,
+  ): Promise<{
+    id: string
+    name: string
+    email: string
+  } | null>
 }

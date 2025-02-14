@@ -1,4 +1,5 @@
 import { IdGeneratorAdapter } from '../adapters/id-generator'
+import { GetTopFiveExpensesController } from '../application/controllers/transactions/get-top-five-expense'
 import {
   UpdateTransactionsController,
   CreateTransactionsController,
@@ -8,6 +9,7 @@ import {
 import { PrismaUsersRepository } from '../application/repositories/postgres'
 import { PrismaCategoriesRepository } from '../application/repositories/postgres/prisma-categories-repository'
 import { PrismaTransactionsRepository } from '../application/repositories/postgres/prisma-transaction-repository'
+import { GetTopFiveExpensesUseCase } from '../application/use-cases/transactions/get-top-five-expenses'
 import {
   CreateTransactionUseCase,
   DeleteTransactionUseCase,
@@ -78,4 +80,20 @@ export const makeGetTransactionsByUserIdController = () => {
     new GetTransactionsByUserIdController(getTransactionsByUserIdUseCase)
 
   return getTransactionsByUserIdController
+}
+
+export const makeGetTopFiveExpensesController = () => {
+  const usersRepository = new PrismaUsersRepository()
+  const transactionsRepository = new PrismaTransactionsRepository()
+
+  const getTopFiveExpensesUseCase = new GetTopFiveExpensesUseCase(
+    transactionsRepository,
+    usersRepository,
+  )
+
+  const getTopFiveExpensesController = new GetTopFiveExpensesController(
+    getTopFiveExpensesUseCase,
+  )
+
+  return getTopFiveExpensesController
 }

@@ -16,6 +16,7 @@ import { makeGetAllCategoriesController } from '../../factories/categories'
 import {
   makeCreateTransactionsController,
   makeDeleteTransactionsController,
+  makeGetTopFiveExpensesController,
   makeGetTransactionsByUserIdController,
   makeUpdateTransactionsController,
 } from '../../factories/transactions'
@@ -95,4 +96,10 @@ router.get(
   '/transactions',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetTransactionsByUserIdController()),
+)
+
+router.get(
+  '/transactions/top-five-expenses',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetTopFiveExpensesController()),
 )

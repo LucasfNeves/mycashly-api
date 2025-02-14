@@ -17,4 +17,9 @@ export interface TransactionsRepository {
     userId: string,
     filters: TransactionsFilters,
   ): Promise<Transactions[] | null>
+
+  findTopFiveExpenses(
+    userId: string,
+    filters: TransactionsFilters,
+  ): Promise<Transactions[] | null>
 }

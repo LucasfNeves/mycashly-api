@@ -90,4 +90,16 @@ export class inMemoryTransactionsRepository implements TransactionsRepository {
 
     return transactions
   }
+
+  async findTopFiveExpenses(userId: string): Promise<Transactions[] | null> {
+    const transactions = this.transactions
+      .filter(
+        (transaction) =>
+          transaction.userId === userId && transaction.type === 'EXPENSE',
+      )
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 5)
+
+    return transactions
+  }
 }

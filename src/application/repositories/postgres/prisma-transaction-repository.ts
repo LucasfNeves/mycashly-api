@@ -50,4 +50,23 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
 
     return transaction
   }
+
+  async findTopFiveExpenses(userId: string, filters: TransactionsFilters) {
+    const transactions = await prisma.transactions.findMany({
+      where: {
+        userId: userId,
+        type: 'EXPENSE',
+        date: {
+          gte: new Date(Date.UTC(filters.year, filters.month)),
+          lt: new Date(Date.UTC(filters.year, filters.month + 1)),
+        },
+      },
+      take: 5,
+      orderBy: {
+        value: 'desc',
+      },
+    })
+
+    return transactions
+  }
 }

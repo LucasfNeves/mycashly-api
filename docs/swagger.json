@@ -588,6 +588,95 @@
       }
     },
 
+    "/transactions/top-five-expenses": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get top five expenses by userId",
+        "description": "Retrieve top five expenses by userId",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "month",
+            "description": "The month to filter transactions.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 11
+            }
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "description": "The year to filter transactions.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 2024
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "The type of transactions to filter (optional). Values can be 'EXPENSE', 'RECEIVES', or 'INVESTMENT'.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["EXPENSE", "RECEIVES", "INVESTMENT"],
+              "example": "EXPENSE"
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Transactions retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/InvalidInputResponse"
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Transaction not found"
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+
     "/transactions/{transactionId}": {
       "patch": {
         "tags": ["Transactions"],

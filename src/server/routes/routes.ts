@@ -5,6 +5,7 @@ import {
   makeGetUserBalanceController,
   makeGetUserByIdController,
   makeRefreshTokenController,
+  makeUpdatePasswordController,
   makeUpdateUserController,
 } from '../../factories/user'
 import { routeAdapter } from '../../adapters/route-adapter'
@@ -55,6 +56,12 @@ router.get(
   '/users/balance',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeGetUserBalanceController()),
+)
+
+router.patch(
+  '/users/password',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeUpdatePasswordController()),
 )
 
 /** Categories */

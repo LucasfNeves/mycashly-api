@@ -34,7 +34,9 @@ export interface UsersRepository {
     userId: string,
     password: string,
   ): Promise<{
-    password: string
+    id: string
+    name: string
+    email: string
   } | null>
 
   getUserWithPasswordByIdRepository(userId: string): Promise<{

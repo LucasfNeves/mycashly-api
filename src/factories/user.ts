@@ -20,6 +20,8 @@ import { RefreshTokenController } from '../application/controllers/user/refresh-
 import { PrismaRefreshTokenRepository } from '../application/repositories/postgres/prisma-refresh-token-repository'
 import { JwtAdapterImpl } from '../adapters/jwt-adapter'
 import { RefreshTokenUseCase } from '../application/use-cases/user/refresh-token-use-case'
+import { UpdatePasswordUseCase } from '../application/use-cases/user/update-password'
+import { UpdatePasswordController } from '../application/controllers/user/update-password-controller'
 
 export const makeCreateUserController = () => {
   const usersRepository = new PrismaUsersRepository()
@@ -109,4 +111,16 @@ export const makeRefreshTokenController = () => {
   const refreshTokenController = new RefreshTokenController(refreshTokenUseCase)
 
   return refreshTokenController
+}
+
+export const makeUpdatePasswordController = () => {
+  const usersRepository = new PrismaUsersRepository()
+
+  const updatePasswordUseCase = new UpdatePasswordUseCase(usersRepository)
+
+  const updatePasswordController = new UpdatePasswordController(
+    updatePasswordUseCase,
+  )
+
+  return updatePasswordController
 }

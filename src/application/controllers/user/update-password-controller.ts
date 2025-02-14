@@ -1,11 +1,14 @@
 import { IController, IRequest, IResponse } from '../../interfaces/IController'
 import { UpdatePasswordUseCase } from '../../use-cases/user/update-password'
-import { ok, serverError, userNotFound } from '../helpers/http'
+import { badRequest, ok, serverError, userNotFound } from '../helpers/http'
 import {
   checkIfIdIsValid,
   generateInvalidIdResponse,
 } from '../helpers/validation'
 import { updatePasswordSchema } from '../../../schemas/user'
+import { ZodError } from 'zod'
+import { PasswordMustBeDifferentError } from '../../../errors/password-must-be-different-error'
+import { InvalidCredentialsError, UserNotFoundError } from '../../../errors'
 
 export class UpdatePasswordController implements IController {
   constructor(private readonly updatePasswordUseCase: UpdatePasswordUseCase) {}
@@ -31,7 +34,32 @@ export class UpdatePasswordController implements IController {
 
       return ok({ ...updatePassword })
     } catch (error) {
-      console.error(error)
+      if (error instanceof Error && 'code' in error && error.code === 'P2025') {
+        return userNotFound({ errorMessage: 'User not found' })
+      }
+
+      if (error instanceof ZodError) {
+        return badRequest({
+          message: error.errors[0].message,
+        })
+      }
+
+      if (error instanceof UserNotFoundError) {
+        return userNotFound({ errorMessage: 'User not found' })
+      }
+
+      if (error instanceof PasswordMustBeDifferentError) {
+        return badRequest({
+          message: error.message,
+        })
+      }
+
+      if (error instanceof InvalidCredentialsError) {
+        return badRequest({
+          message: error.message,
+        })
+      }
+
       return serverError()
     }
   }

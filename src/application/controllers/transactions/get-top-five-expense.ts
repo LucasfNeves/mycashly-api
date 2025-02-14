@@ -1,5 +1,5 @@
 import { ZodError } from 'zod'
-import { validateTransactionsQueryParams } from '../../../schemas/transactions'
+import { validateTopFiveExpensesQueryParams } from '../../../schemas/transactions'
 import { IController, IRequest, IResponse } from '../../interfaces/IController'
 import { GetTopFiveExpensesUseCase } from '../../use-cases/transactions/get-top-five-expenses'
 import { badRequest, ok, serverError } from '../helpers/http'
@@ -27,10 +27,9 @@ export class GetTopFiveExpensesController implements IController {
         return generateInvalidIdResponse()
       }
 
-      const filters = validateTransactionsQueryParams.parse({
+      const filters = validateTopFiveExpensesQueryParams.parse({
         month: query?.month ? Number(query.month) : undefined,
         year: query?.year ? Number(query.year) : undefined,
-        type: query?.type,
       })
 
       const transactions = await this.getTopFiveExpensesUseCase.execute(

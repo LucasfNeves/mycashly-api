@@ -132,3 +132,8 @@ export const validateTransactionsQueryParams = z.object({
 
   type: z.enum(['INCOME', 'EXPENSE', 'INVESTMENT']).optional(),
 })
+
+export const validateTopFiveExpensesQueryParams =
+  validateTransactionsQueryParams.omit({
+    type: true,
+  })

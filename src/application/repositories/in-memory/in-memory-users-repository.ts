@@ -91,4 +91,33 @@ export class inMemoryUsersRepository implements UsersRepository {
       balance: 0,
     }
   }
+
+  async getUserWithPasswordByIdRepository(userId: string) {
+    const user = this.items.find((user) => user.id === userId)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async updatePassword(userId: string, password: string) {
+    const user = this.items.find((user) => user.id === userId)
+
+    if (!user) {
+      return null
+    }
+
+    const updatedUser = {
+      ...user,
+      password,
+    } as User
+
+    this.items = this.items.map((user) =>
+      user.id === userId ? updatedUser : user,
+    )
+
+    return updatedUser
+  }
 }

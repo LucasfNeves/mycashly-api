@@ -32,9 +32,6 @@ export class UpdatePasswordUseCase {
       throw new UserNotFoundError()
     }
 
-    console.log('Senha informada pelo usuário:', currentPassword)
-    console.log('Senha salva no banco:', user.password)
-
     const doesPasswordMatch = await compare(currentPassword, user.password)
 
     if (!doesPasswordMatch) {
@@ -50,7 +47,6 @@ export class UpdatePasswordUseCase {
     }
 
     const hashedPassword = await hash(newPassword, 12)
-    console.log('Novo hash gerado:', hashedPassword)
 
     const updatePassword = await this.usersRepository.updatePassword(
       userId,

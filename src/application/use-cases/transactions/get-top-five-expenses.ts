@@ -4,7 +4,7 @@ import { TransactionsFilters } from './get-transactions-by-user-id'
 import { UserNotFoundError } from '../../../errors'
 import { UsersRepository } from '../../repositories/interfaces/users-repository'
 
-export class GetTopFiveExpenses {
+export class GetTopFiveExpensesUseCase {
   constructor(
     private readonly transactionsRepository: TransactionsRepository,
     private readonly usersRepository: UsersRepository,

@@ -296,6 +296,63 @@
       }
     },
 
+    "/users/password": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user password",
+        "description": "Update user password with the input payload",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Password object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdatePasswordParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Password updated successfully",
+            "schema": {
+              "$ref": "#/definitions/GetUserResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/InvalidInputResponse"
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/UserNotFoundResponse"
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/InvalidCredentialsError"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+
     "/users/balance": {
       "get": {
         "tags": ["Users"],
@@ -775,11 +832,6 @@
           "type": "string",
           "format": "email",
           "example": "example@gmail.com"
-        },
-
-        "password": {
-          "type": "string",
-          "example": "12345678"
         }
       }
     },
@@ -800,6 +852,20 @@
           "type": "string",
           "format": "email",
           "example": "example@gmail.com"
+        }
+      }
+    },
+
+    "UpdatePasswordParams": {
+      "type": "object",
+      "properties": {
+        "currentPassword": {
+          "type": "string",
+          "example": "12345678"
+        },
+        "newPassword": {
+          "type": "string",
+          "example": "87654321"
         }
       }
     },

@@ -3,6 +3,7 @@ import {
   makeCreateUserController,
   makeDeleteUserController,
   makeGetUserBalanceController,
+  makeGetUserBalanceFilteredController,
   makeGetUserByIdController,
   makeRefreshTokenController,
   makeUpdatePasswordController,
@@ -63,6 +64,12 @@ router.patch(
   '/users/password',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeUpdatePasswordController()),
+)
+
+router.get(
+  '/users/balance-filtred',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeGetUserBalanceFilteredController()),
 )
 
 /** Categories */

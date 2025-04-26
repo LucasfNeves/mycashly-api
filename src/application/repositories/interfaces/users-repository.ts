@@ -1,5 +1,6 @@
 import { Prisma, User } from '@prisma/client'
 import { Decimal } from '@prisma/client/runtime/library'
+import { TransactionsFilters } from '../../use-cases/transactions'
 
 export interface UsersRepository {
   findByEmail(email: string): Promise<User | null>
@@ -24,6 +25,16 @@ export interface UsersRepository {
   } | null>
 
   getUserBalance(userId: string): Promise<{
+    expenses: number | Decimal
+    incomes: number | Decimal
+    investments: number | Decimal
+    balance: number | Decimal
+  }>
+
+  getUserBalanceFiltred(
+    userId: string,
+    filters: TransactionsFilters,
+  ): Promise<{
     expenses: number | Decimal
     incomes: number | Decimal
     investments: number | Decimal

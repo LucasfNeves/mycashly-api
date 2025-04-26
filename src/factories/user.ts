@@ -22,6 +22,8 @@ import { JwtAdapterImpl } from '../adapters/jwt-adapter'
 import { RefreshTokenUseCase } from '../application/use-cases/user/refresh-token-use-case'
 import { UpdatePasswordUseCase } from '../application/use-cases/user/update-password'
 import { UpdatePasswordController } from '../application/controllers/user/update-password-controller'
+import { GetUserBalanceFilteredUseCase } from '../application/use-cases/user/get-user-balancer-filtered'
+import { GetUserBalanceFilteredController } from '../application/controllers/user/get-user-balance-filtred'
 
 export const makeCreateUserController = () => {
   const usersRepository = new PrismaUsersRepository()
@@ -123,4 +125,18 @@ export const makeUpdatePasswordController = () => {
   )
 
   return updatePasswordController
+}
+
+export const makeGetUserBalanceFilteredController = () => {
+  const usersRepository = new PrismaUsersRepository()
+
+  const getUserBalanceFilteredUseCase = new GetUserBalanceFilteredUseCase(
+    usersRepository,
+  )
+
+  const getUserBalanceFilteredController = new GetUserBalanceFilteredController(
+    getUserBalanceFilteredUseCase,
+  )
+
+  return getUserBalanceFilteredController
 }

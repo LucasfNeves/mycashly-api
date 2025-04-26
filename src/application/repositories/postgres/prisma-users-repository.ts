@@ -196,4 +196,82 @@ export class PrismaUsersRepository implements UsersRepository {
       balance: balance,
     }
   }
+
+  async getUserBalanceFiltred(
+    userId: string,
+    filters: {
+      month: number
+      year: number
+    },
+  ): Promise<{
+    expenses: number | Prisma.Decimal
+    incomes: number | Prisma.Decimal
+    investments: number | Prisma.Decimal
+    balance: number | Prisma.Decimal
+  }> {
+    const { month, year } = filters
+
+    const {
+      _sum: { value: totalExpenses },
+    } = await prisma.transactions.aggregate({
+      where: {
+        userId,
+        type: 'EXPENSE',
+        date: {
+          gte: new Date(Date.UTC(year, month)),
+          lt: new Date(Date.UTC(year, month + 1)),
+        },
+      },
+      _sum: {
+        value: true,
+      },
+    })
+
+    const {
+      _sum: { value: totalIncomes },
+    } = await prisma.transactions.aggregate({
+      where: {
+        userId,
+        type: 'INCOME',
+        date: {
+          gte: new Date(Date.UTC(year, month)),
+          lt: new Date(Date.UTC(year, month + 1)),
+        },
+      },
+      _sum: {
+        value: true,
+      },
+    })
+
+    const {
+      _sum: { value: totalInvestments },
+    } = await prisma.transactions.aggregate({
+      where: {
+        userId,
+        type: 'INVESTMENT',
+        date: {
+          gte: new Date(Date.UTC(year, month)),
+          lt: new Date(Date.UTC(year, month + 1)),
+        },
+      },
+      _sum: {
+        value: true,
+      },
+    })
+
+    const _totalExpenses = totalExpenses || new Prisma.Decimal(0)
+    const _totalIncomes = totalIncomes || new Prisma.Decimal(0)
+    const _totalInvestments = totalInvestments || new Prisma.Decimal(0)
+
+    const balance = new Prisma.Decimal(_totalIncomes)
+      .minus(new Prisma.Decimal(_totalExpenses))
+      .minus(new Prisma.Decimal(_totalInvestments))
+
+    return {
+      expenses: _totalExpenses,
+      incomes: _totalIncomes,
+      investments: _totalInvestments,
+      balance,
+    }
+  }
 }
